@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "module": "None",
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext",
+      "es6",
+      "dom",
+      "dom.iterable"
+    ],
+    "removeComments": true,
+    "target": "ES2020",
+    "noImplicitAny": false,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "**/*"
+  ]
+}
