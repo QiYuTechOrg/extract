@@ -8,6 +8,9 @@ const utilsCode = fs.readFileSync("src/shared/utils.js", {encoding: 'utf8'});
 const utilsNode = parse(utilsCode, {sourceType: "module"});
 
 
+/// 如果 src 目录中的 *.ts 文件 有 import 语句
+/// 则自动添加 shared/utils 中的所有函数到 编译生成之后的 js 文件中
+/// 这样多个脚本可以共享相同的逻辑
 fs.readdirSync("src")
     .map((dir_name) => {
         const full_path = `src/${dir_name}/code.js`;
