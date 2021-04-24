@@ -1,22 +1,9 @@
-let fn = function (args) {
+import {checkIfNumber, checkHumanCanView} from "../shared/utils";
+
+let fn = async function (args) {
     /// 必须在 baidu.com 中执行才有用
     if (!document.location.href.includes("baidu.com")) {
         return null;
-    }
-
-    function checkIfNumber(s: string) {
-        return !isNaN(parseInt(s));
-    }
-
-    /// 忽略有毒的数据
-    function checkHumanCanView(e: HTMLElement) {
-        console.log("useless data: ", e)
-        if (e.style.display === 'none' || e.style.visibility === 'hidden') {
-            return false;
-        }
-        const rect = e.getBoundingClientRect();
-
-        return !(rect.width < 6 || rect.height < 6);
     }
 
     function extractPages() {

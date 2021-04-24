@@ -1,0 +1,17 @@
+{
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "parcel build ./*/*.ts"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/cli": "^7.13.16",
+    "@babel/parser": "^7.13.16",
+    "@babel/generator": "^7.13.16",
+    "@babel/traverse": "^7.13.17",
+    "@babel/types": "^7.13.17",
+    "typescript": "^4.2.4"
+  }
+}

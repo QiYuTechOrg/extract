@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
     "allowJs": true,
-    "module": "None",
+    "module": "CommonJS",
     "skipLibCheck": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "lib": [
       "esnext",
@@ -16,6 +17,6 @@
     "resolveJsonModule": true
   },
   "include": [
-    "**/*"
+    "src/**/code.ts"
   ]
 }
