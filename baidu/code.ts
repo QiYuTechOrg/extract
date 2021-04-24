@@ -8,6 +8,17 @@ let fn = function (args) {
         return !isNaN(parseInt(s));
     }
 
+    /// 忽略有毒的数据
+    function checkHumanCanView(e: HTMLElement) {
+        console.log("useless data: ", e)
+        if (e.style.display === 'none' || e.style.visibility === 'hidden') {
+            return false;
+        }
+        const rect = e.getBoundingClientRect();
+
+        return !(rect.width < 6 || rect.height < 6);
+    }
+
     function extractPages() {
         const page = document.getElementById("page")
         if (!page) {
@@ -27,8 +38,7 @@ let fn = function (args) {
     }
 
     function extractItem(e: HTMLDivElement) {
-        const rect = e.getBoundingClientRect();
-        if (rect.width < 6 || rect.height < 6) {
+        if (checkHumanCanView(e) === false) {
             return null;
         }
 

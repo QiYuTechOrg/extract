@@ -5,6 +5,14 @@ let fn = function (args) {
     function checkIfNumber(s) {
         return !isNaN(parseInt(s));
     }
+    function checkHumanCanView(e) {
+        console.log("useless data: ", e);
+        if (e.style.display === 'none' || e.style.visibility === 'hidden') {
+            return false;
+        }
+        const rect = e.getBoundingClientRect();
+        return !(rect.width < 6 || rect.height < 6);
+    }
     function extractPages() {
         const page = document.getElementById("page");
         if (!page) {
@@ -23,8 +31,7 @@ let fn = function (args) {
         }).filter((t) => t != null);
     }
     function extractItem(e) {
-        const rect = e.getBoundingClientRect();
-        if (rect.width < 6 || rect.height < 6) {
+        if (checkHumanCanView(e) === false) {
             return null;
         }
         let summary = "";
