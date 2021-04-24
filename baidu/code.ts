@@ -1,5 +1,30 @@
 let fn = function (args) {
+    /// 必须在 baidu.com 中执行才有用
+    if (!document.location.href.includes("baidu.com")) {
+        return null;
+    }
 
+    function checkIfNumber(s: string) {
+        return !isNaN(parseInt(s));
+    }
+
+    function extractPages() {
+        const page = document.getElementById("page")
+        if (!page) {
+            return [];
+        }
+        const inner = page.querySelector(".page-inner")
+        if (!inner) {
+            return [];
+        }
+        const a_s = [...inner.querySelectorAll("a")];
+        return a_s.map((a: HTMLAnchorElement) => {
+            if (a.innerText.includes("下一页") || !checkIfNumber(a.innerText)) {
+                return null;
+            }
+            return {page: parseInt(a.innerText), url: a.href}
+        }).filter((t) => t != null)
+    }
 
     function extractItem(e: HTMLDivElement) {
         const rect = e.getBoundingClientRect();
@@ -42,7 +67,8 @@ let fn = function (args) {
 
     return {
         data: {
-            baidu_search_results: items
+            baidu_search_results: items,
+            baidu_search_pages: extractPages(),
         }
     }
 }

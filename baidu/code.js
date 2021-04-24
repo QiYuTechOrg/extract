@@ -1,4 +1,27 @@
 let fn = function (args) {
+    if (!document.location.href.includes("baidu.com")) {
+        return null;
+    }
+    function checkIfNumber(s) {
+        return !isNaN(parseInt(s));
+    }
+    function extractPages() {
+        const page = document.getElementById("page");
+        if (!page) {
+            return [];
+        }
+        const inner = page.querySelector(".page-inner");
+        if (!inner) {
+            return [];
+        }
+        const a_s = [...inner.querySelectorAll("a")];
+        return a_s.map((a) => {
+            if (a.innerText.includes("下一页") || !checkIfNumber(a.innerText)) {
+                return null;
+            }
+            return { page: parseInt(a.innerText), url: a.href };
+        }).filter((t) => t != null);
+    }
     function extractItem(e) {
         const rect = e.getBoundingClientRect();
         if (rect.width < 6 || rect.height < 6) {
@@ -34,7 +57,8 @@ let fn = function (args) {
     console.log(items);
     return {
         data: {
-            baidu_search_results: items
+            baidu_search_results: items,
+            baidu_search_pages: extractPages(),
         }
     };
 };
