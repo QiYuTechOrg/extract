@@ -1,12 +1,25 @@
-import {checkIfNumber} from "../shared/utils";
+import {checkIfNumber, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/utils";
 
-let fn = async function (args) {
+let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } | null> {
     /// 检测是否在 google 域名下面
     if (!document.location.host.includes("google")) {
         return null;
     }
 
-    function extractPages() {
+    function extractRelated(): string[] {
+        const d = document.getElementById("botstuff")
+        if (!d) {
+            return [];
+        }
+
+        const as = [...d.querySelectorAll('a')]
+
+        return as.map((a: HTMLAnchorElement) => {
+            return a.innerText
+        })
+    }
+
+    function extractPages(): SearchResultPage[] {
         const tr = document.querySelector("#xjs > table > tbody > tr");
         if (!tr) {
             return [];
@@ -24,7 +37,7 @@ let fn = async function (args) {
             .filter((t) => t !== null)
     }
 
-    function extractItem(e: HTMLDivElement) {
+    function extractItem(e: HTMLDivElement): SearchResultItem {
         if (!e || !e.firstElementChild || !e.firstElementChild.firstElementChild) {
             console.log('e is invalid: ', e)
             return null;
@@ -59,7 +72,7 @@ let fn = async function (args) {
             title: a.title,
             innerHtml: a.innerHTML,
             innerText: a.innerText,
-            ad: false,
+            isAd: false,
         }
     }
 
@@ -74,8 +87,9 @@ let fn = async function (args) {
 
     return {
         data: {
-            google_search_results: items,
-            google_search_pages: extractPages(),
+            items: items,
+            pages: extractPages(),
+            related: extractRelated(),
         }
     }
 }
