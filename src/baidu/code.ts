@@ -1,11 +1,5 @@
-import {
-    checkIfNumber,
-    checkHumanCanView,
-    FnExecArgs,
-    SearchResultData,
-    SearchResultItem,
-    SearchResultPage
-} from "../shared/utils";
+import {checkIfNumber, checkHumanCanView} from "../shared/utils";
+import {FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
 
 let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData }> {
     /// 必须在 baidu.com 中执行才有用

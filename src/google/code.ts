@@ -1,4 +1,5 @@
-import {checkIfNumber, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/utils";
+import {checkIfNumber} from "../shared/utils";
+import {FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
 
 let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } | null> {
     /// 检测是否在 google 域名下面
