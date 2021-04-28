@@ -1,12 +1,19 @@
-import {checkIfNumber, checkHumanCanView} from "../shared/utils";
+import {
+    checkIfNumber,
+    checkHumanCanView,
+    FnExecArgs,
+    SearchResultData,
+    SearchResultItem,
+    SearchResultPage
+} from "../shared/utils";
 
-let fn = async function (args) {
+let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData }> {
     /// 必须在 baidu.com 中执行才有用
     if (!document.location.href.includes("baidu.com")) {
         return null;
     }
 
-    function extractPages() {
+    function extractPages(): SearchResultPage[] {
         const page = document.getElementById("page")
         if (!page) {
             return [];
@@ -24,7 +31,7 @@ let fn = async function (args) {
         }).filter((t) => t != null)
     }
 
-    function extractItem(e: HTMLDivElement) {
+    function extractItem(e: HTMLDivElement): SearchResultItem {
         if (checkHumanCanView(e) === false) {
             return null;
         }
@@ -53,8 +60,21 @@ let fn = async function (args) {
             title: a.title,
             innerHtml: a.innerHTML,
             innerText: a.innerText,
-            ad: isAd,
+            isAd: isAd,
         }
+    }
+
+    function extractRelated(): string[] {
+        const rs = document.getElementById("rs")
+        if (!rs) {
+            return [];
+        }
+
+        const as = [...rs.querySelectorAll("a")]
+
+        return as.map((a: HTMLAnchorElement) => {
+            return a.innerText
+        })
     }
 
     const content = document.querySelector("#content_left");
@@ -64,8 +84,9 @@ let fn = async function (args) {
 
     return {
         data: {
-            baidu_search_results: items,
-            baidu_search_pages: extractPages(),
+            items: items,
+            pages: extractPages(),
+            related: extractRelated(),
         }
     }
 }
