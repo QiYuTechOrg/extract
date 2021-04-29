@@ -138,6 +138,7 @@ export interface FnQueueUrl {
     title?: string       // a href title
     inner_text?: string  // a href innerText
     inner_html?: string  // a href innerHtml (with polish)
+    not_inc_depth?: boolean  // 不需要增加 深度 [比如: 一般对于翻页URL, 不需要增加页面的深度] default: false
 }
 
 /// 函数执行结果
