@@ -65,18 +65,18 @@ export interface DataExtractArgs {
 
     /// 返回模式
     /// 部分参数有可能不需要
-    returnMode: DataExtractReturnMode | null
+    returnMode?: DataExtractReturnMode
 
     /// 抽取模式为 link 的时候有效
     /// 允许为 null 使用默认值
-    linkOptions: ExtractLinkOptions | null
+    linkOptions?: ExtractLinkOptions
 
     /// 抽取模式为 value 的时候有效
     /// 允许为 null 使用默认值
-    valueOptions: ExtractValueOptions | null
+    valueOptions?: ExtractValueOptions
 
     /// 智能提取模式
-    smartOptions: ExtractSmartOptions | null
+    smartOptions?: ExtractSmartOptions
 }
 
 /// HTTP 请求参数
@@ -84,15 +84,21 @@ export interface HttpCallArgs {
     url: string
     method: string
     form_data: Record<string, any>
-    form_type: 'json' | 'form' | null
+    form_type?: 'json' | 'form'
 }
 
 /// 抽取 URL 返回结果
 export interface ExtractLinkItem {
+    // 目标 URL
     target_url: string
-    link_title: string | null
-    innerText: string | null
-    innerHtml: string | null
+    // 来源页面
+    src_url: string
+    // 链接标题
+    link_title?: string
+    // 内部文字
+    innerText?: string
+    // 内部 html
+    innerHtml?: string
 }
 
 export type ExtractLinkResult = ExtractLinkItem[]
@@ -102,7 +108,7 @@ export interface FnExecArgs {
     /// 当前调用的函数 名称
     fn_name: string
     /// 函数的参数
-    fn_args: null | string | JSON
+    fn_args?: string | JSON
 
     /// 允许调用的函数
     fns: {
@@ -119,4 +125,42 @@ export interface FnExecArgs {
         // HTTP 请求
         http: (args: HttpCallArgs) => Promise<string>,
     }
+}
+
+export interface FnExecNextFnArgs {
+    fn_name: string,
+    fn_args: any
+}
+
+export interface FnQueueUrl {
+    queue_name: string   // 处理队列
+    url: string          // target url
+    title?: string       // a href title
+    inner_text?: string  // a href innerText
+    inner_html?: string  // a href innerHtml (with polish)
+}
+
+/// 函数执行结果
+export interface FnExecResult {
+    /// 把 url 添加到 queue 中
+    ///        队列 URL 的配置
+    queue_url?: FnQueueUrl[]
+
+    /// [queue_url] 中需要排除的 URL
+    exclude_url?: string[]
+
+    /// 当前页面需要 执行的函数 列表
+    /// fn_args 可以为空 [表示没有参数]
+    next_fns?: FnExecNextFnArgs[]
+
+    /// 本函数 提取出来的数据
+    /// 可以为空 [注意: 后面提取出来的数据会覆盖前面提取出来的数据]
+    data?: Record<string, unknown> | any
+
+    /// fn 函数的返回值
+    fn_ret?: Record<string, any>
+
+    /// 是否取消任务
+    // [当发生严重错误的时候，返回 true 表示本次任务已经取消]
+    cancel_job?: boolean
 }
