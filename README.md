@@ -6,7 +6,7 @@
 
 [文档地址](https://oss.qiyutech.tech/seo/extract/index.html)
 
-# build
+# 构建
 
 ```shell
 yarn install
