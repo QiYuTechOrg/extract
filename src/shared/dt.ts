@@ -1,4 +1,5 @@
 /// 搜索引擎返回的结果
+
 export interface SearchResultItem {
     /// 简介
     summary: string
@@ -32,6 +33,23 @@ export interface SearchResultData {
     related: string[]
     // 翻页
     pages: SearchResultPage[]
+}
+
+/**
+ * 搜索引擎返回的字段信息
+ */
+export interface KeywordSearchResult {
+    /// 搜索引擎的名字 [必须有表示这个信息是那个搜索引擎产生的]
+    se_name: string
+
+    /// 无法正常获取 code
+    code_error?: boolean
+    /// 无法打开新页面 [通常是因为浏览器配置错误]
+    page_error?: boolean
+    /// 搜索结果
+    search_result?: SearchResultData
+    /// 函数的日志记录
+    func_log?: LogRecord[]
 }
 
 
@@ -87,6 +105,14 @@ export interface HttpCallArgs {
     form_type?: 'json' | 'form'
 }
 
+/// 调用其他函数
+export interface FuncCallArgs {
+    // 函数的名称
+    fn_name: string
+    // 函数的参数
+    fn_args: Record<string, any>
+}
+
 /// 抽取 URL 返回结果
 export interface ExtractLinkItem {
     // 目标 URL
@@ -103,34 +129,113 @@ export interface ExtractLinkItem {
 
 export type ExtractLinkResult = ExtractLinkItem[]
 
-/// 函数执行参数
+export interface StorageCrawlResultRecord {
+    id: number
+
+    url: string
+    /// 最终的 URL [一般跟 url 应该一样，除非 301 跳转等]
+    final_url: string
+    queue_name: string
+
+    link_depth: number
+    /// 最后抓取到的数据
+    extract_data: string | Record<string, any>
+    /// html 源文件
+    html_raw: string
+
+    snapshot_path: string | null
+    rrweb_path: string | null
+    video_path: string | null
+
+    // 耗时 单位毫秒
+    consume: number
+
+    /// 创建时间
+    ctime: string
+}
+
+export interface BindingDbFunctions {
+    /// 添加到队列中
+    crawl_queue_add: (newUrl: FnQueueUrl) => Promise<boolean>
+}
+
+export interface BindingLogFunctions {
+    /// 调试日志
+    debug: (message: string, context?: Record<string, any>) => Promise<void>
+    /// 提示日志
+    info: (message: string, context?: Record<string, any>) => Promise<void>
+    /// 警告日志
+    warn: (message: string, context?: Record<string, any>) => Promise<void>
+    /// 错误日志
+    error: (message: string, context?: Record<string, any>) => Promise<void>
+}
+
+export interface BindingCacheFunctions {
+    /// 设置页面内缓存
+    set: (key: string, value: any) => Promise<void>
+    /// 获取页面内缓存
+    get: (key: string, default_value: any) => Promise<any | null>
+    /// 获取页面内所有的缓存值
+    all: () => Promise<Record<string, any>>
+}
+
+export interface BindingDataFunctions {
+    set: (obj: Record<string, any>) => Promise<void>
+    get: () => Promise<Record<string, any>>
+}
+
+
+export interface BindingSharedFunctions {
+    /// 截图
+    snapshot: (element: string | HTMLElement) => Promise<string | null>,
+    /// OCR 识别
+    ocr: (element: string | HTMLElement) => Promise<string | null>,
+    /// 点击
+    mouse_click: (element: string | HTMLElement) => Promise<void>,
+    /// 语言
+    language: {
+        // 语言识别 返回语言的类别
+        identify: (text: string) => Promise<string | null>,
+    },
+    /// 发送 HTTP 请求
+    http: (args: HttpCallArgs) => Promise<string | null>,
+    /// 函数调用
+    call_func: (args: FuncCallArgs) => Promise<any | null>
+    /// 日志相关的操作
+    log: BindingLogFunctions,
+    /// cache 操作
+    cache: BindingCacheFunctions
+    /// 数据相关的操作
+    data: BindingDataFunctions
+    /// 本地通知
+    notify: (args: LocalNotificationOptions) => Promise<boolean>
+}
+
+export interface BindingKeywordFunctions extends BindingSharedFunctions {
+}
+
+export interface BindingCrawlFunctions extends BindingSharedFunctions {
+    /// 数据库相关的操作
+    db: BindingDbFunctions,
+}
+
 export interface FnExecArgs {
     /// 当前调用的函数 名称
     fn_name: string
     /// 函数的参数
-    fn_args?: string | JSON
-
-    /// 允许调用的函数
-    fns: {
-        // 截屏
-        snapshot: (e: HTMLElement) => Promise<boolean>,
-        // 模拟鼠标点击
-        mouse_click: (args: { ele: HTMLElement, point: [number, number] }) => Promise<boolean>,
-        // OCR 识别网页内容
-        ocr_text: (ele: HTMLElement) => Promise<string>,
-        // 提取内容
-        extract: (args: DataExtractArgs) => Promise<ExtractLinkResult | string>,
-        // 获取当前页面元素信息
-        metadata: () => Promise<Record<string, any>>,
-        // HTTP 请求
-        http: (args: HttpCallArgs) => Promise<string>,
-    }
+    fn_args?: Record<string, any>
+    /// 绑定的函数
+    fns: BindingCrawlFunctions    // 数据提取的时候
+        | BindingKeywordFunctions // 关键字搜索的时候
 }
 
-export interface FnExecNextFnArgs {
-    fn_name: string,
-    fn_args: any
+/// 可以返回任意的值
+/// 注意: 个别字段有特殊的含义
+export interface FnExecResult extends Record<string, any> {
+    /// 在运行数据抓取的时候有效
+    cancel_job?: boolean
 }
+
 
 export interface FnQueueUrl {
     queue_name: string   // 处理队列
@@ -141,27 +246,43 @@ export interface FnQueueUrl {
     not_inc_depth?: boolean  // 不需要增加 深度 [比如: 一般对于翻页URL, 不需要增加页面的深度] default: false
 }
 
-/// 函数执行结果
-export interface FnExecResult {
-    /// 把 url 添加到 queue 中
-    ///        队列 URL 的配置
-    queue_url?: FnQueueUrl[]
 
-    /// [queue_url] 中需要排除的 URL
-    exclude_url?: string[]
+export interface CrawlAddLogArgs {
+    // 网页的 URL
+    url: string,
+    // 日志等级
+    level: string,
+    // 消息
+    message: string,
+    // 上下文
+    context?: Record<string, any>
+}
 
-    /// 当前页面需要 执行的函数 列表
-    /// fn_args 可以为空 [表示没有参数]
-    next_fns?: FnExecNextFnArgs[]
 
-    /// 本函数 提取出来的数据
-    /// 可以为空 [注意: 后面提取出来的数据会覆盖前面提取出来的数据]
-    data?: Record<string, unknown> | any
+export interface LogRecord {
+    level: 'DEBUG' | 'INFO' | 'WARN' | 'ERROR'
+    message: string
+    context: Record<string, any> | null
+}
 
-    /// fn 函数的返回值
-    fn_ret?: Record<string, any>
 
-    /// 是否取消任务
-    // [当发生严重错误的时候，返回 true 表示本次任务已经取消]
-    cancel_job?: boolean
+/// 本地通知提示
+export interface LocalNotificationOptions {
+    /**
+     * 通知的标题
+     */
+    title: string
+    /**
+     * 通知的内容
+     */
+    body: string
+}
+
+export interface EvaluateFuncType {
+    /// 函数名
+    name: string,
+    /// 函数代码
+    code: string,
+    /// 函数参数
+    args: Record<string, any>
 }
