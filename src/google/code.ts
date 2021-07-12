@@ -1,11 +1,13 @@
 import {checkIfNumber} from "../shared/utils";
-import {FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
+import {BindingKeywordFunctions, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
 
 let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } | null> {
     /// 检测是否在 google 域名下面
     if (!document.location.host.includes("google")) {
         return null;
     }
+
+    const fns = args.fns as BindingKeywordFunctions
 
     function extractRelated(): string[] {
         const d = document.getElementById("botstuff")
@@ -38,16 +40,16 @@ let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } |
             .filter((t) => t !== null)
     }
 
-    function extractItem(e: HTMLDivElement): SearchResultItem {
+    async function extractItem(e: HTMLDivElement): Promise<SearchResultItem> {
         if (!e || !e.firstElementChild || !e.firstElementChild.firstElementChild) {
-            console.log('e is invalid: ', e)
+            await fns.log.error(`e is invalid: ${e.outerHTML}`)
             return null;
         }
 
 
         const r = e.firstElementChild.firstElementChild;
         if (!r.firstElementChild || !r.lastElementChild) {
-            console.log('r not have enough children: ', r)
+            await fns.log.error(`r not have enough children: ${r.outerHTML}`)
             return null;
         }
 
@@ -56,13 +58,13 @@ let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } |
         const last = r.lastElementChild as HTMLDivElement;
 
         if (!first || !last) {
-            console.log('first is:', first, ' last is: ', last);
+            await fns.log.error(`first is: ${first} last is: ${last}`)
             return null;
         }
 
         const a = first.querySelector("a");
         if (!a) {
-            console.log("first element is not find a:", first);
+            await fns.log.info(`first element is not find a: ${first.innerText}`)
             return null;
         }
 
@@ -79,18 +81,15 @@ let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } |
 
     const content = document.querySelector("#rso");
     if (!content) {
+        await fns.notify({title: 'Google Search 获取失败', body: '#rso is not found'})
         return null;
     }
 
-    const items = [...content.querySelectorAll(".g")].map(extractItem).filter((t) => t != null);
+    const items = (await Promise.all([...content.querySelectorAll(".g")].map(extractItem))).filter(Boolean);
 
-    console.log(items)
-
-    return {
-        data: {
-            items: items,
-            pages: extractPages(),
-            related: extractRelated(),
-        }
-    }
+    await fns.data.set({
+        items: items,
+        pages: extractPages(),
+        related: extractRelated(),
+    })
 }

@@ -1,11 +1,13 @@
-import {checkIfNumber, checkHumanCanView} from "../shared/utils";
-import {FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
+import {checkHumanCanView, checkIfNumber} from "../shared/utils";
+import {BindingKeywordFunctions, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
 
 let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData }> {
     /// 必须在 baidu.com 中执行才有用
     if (!document.location.href.includes("baidu.com")) {
         return null;
     }
+
+    const fns = args.fns as BindingKeywordFunctions
 
     function extractPages(): SearchResultPage[] {
         const page = document.getElementById("page")
@@ -22,7 +24,7 @@ let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData }> 
                 return null;
             }
             return {page: parseInt(a.innerText), url: a.href}
-        }).filter((t) => t != null)
+        }).filter(Boolean)
     }
 
     function extractItem(e: HTMLDivElement): SearchResultItem {
@@ -76,11 +78,9 @@ let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData }> 
 
     console.log(items)
 
-    return {
-        data: {
-            items: items,
-            pages: extractPages(),
-            related: extractRelated(),
-        }
-    }
+    await fns.data.set({
+        items: items,
+        pages: extractPages(),
+        related: extractRelated(),
+    })
 }
