@@ -4,7 +4,7 @@ export function checkIfNumber(s: string) {
     return !isNaN(parseInt(s));
 }
 
-/// 忽略有毒的数据
+/// 忽略无效的数据
 export function checkHumanCanView(e: HTMLElement) {
     if (e.style.display === 'none' || e.style.visibility === 'hidden') {
         console.log("element ", e, " is too hidden")
