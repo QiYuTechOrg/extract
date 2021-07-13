@@ -1,4 +1,4 @@
-import {checkHumanCanView, checkSameDomain, convertHrefsToQueue} from "../shared/utils";
+import {checkHumanCanView, convertHrefsToQueue} from "../shared/utils";
 import {FnExecArgs, FnExecResult, FnQueueUrl} from "../shared/dt";
 
 let fn = async function (args: FnExecArgs): Promise<FnExecResult> {
@@ -11,7 +11,7 @@ let fn = async function (args: FnExecArgs): Promise<FnExecResult> {
     const TOP_LIST_QUEUE = 'top';
     const HOT_QUEUE = "hot"
 
-    // 今日要问
+    // 今日要闻
     function extractTopList(): FnQueueUrl[] {
         const topList = document.querySelector(".top-list")
         if (!topList) {
