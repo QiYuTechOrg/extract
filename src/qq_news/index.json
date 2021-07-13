@@ -1,6 +1,6 @@
 {
   "name": "腾讯新闻",
-  "summary": "从 Google 搜索返回的HTML中提取信息",
+  "summary": "从 腾讯新闻 页面的 HTML 中提取信息",
   "fn_config": [
   ]
 }
