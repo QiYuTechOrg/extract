@@ -1,6 +1,7 @@
 .idea
-.parcel-cache
 dist
 node_modules
 # ignore all js files
 *.js
+package-lock.json
+yarn.lock
