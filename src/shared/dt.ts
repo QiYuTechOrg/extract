@@ -1,5 +1,6 @@
-/// 搜索引擎返回的结果
-
+/**
+ * 搜索引擎返回的结果
+ */
 export interface SearchResultItem {
     /// 简介
     summary: string
@@ -15,7 +16,9 @@ export interface SearchResultItem {
     isAd: boolean
 }
 
-/// 搜索引擎返回的分页内容
+/**
+ * 搜索引擎返回的分页内容
+ */
 export interface SearchResultPage {
     // 第几页
     page: number
@@ -41,6 +44,8 @@ export interface SearchResultData {
 export interface KeywordSearchResult {
     /// 搜索引擎的名字 [必须有表示这个信息是那个搜索引擎产生的]
     se_name: string
+    /// 搜索的关键字
+    keyword: string
 
     /// 无法正常获取 code
     code_error?: boolean
@@ -53,6 +58,9 @@ export interface KeywordSearchResult {
 }
 
 
+/**
+ * 智能抽取模式
+ */
 export interface ExtractSmartOptions {
 }
 
@@ -60,10 +68,18 @@ export interface ExtractSmartOptions {
 /// 我们根据 options 和解析类型来判断返回的数据类型
 export type DataExtractReturnMode = "string" | "html"
 
-/// 抽取链接的规则
+/**
+ * 链接的抽取规则
+ */
 export interface ExtractLinkOptions {
-    same_host: boolean // 必须是同一域名
-    same_dir: boolean  // 必须是同一目录(下级目录也可以)
+    /**
+     * 必须是同一域名
+     */
+    same_host: boolean
+    /**
+     * 必须是同一目录(下级目录也可以)
+     */
+    same_dir: boolean
 }
 
 export type ExtractParseMode = "smart" | "link" | "value"
@@ -73,7 +89,9 @@ export interface ExtractValueOptions {
     inline_css: boolean
 }
 
-/// 数据抽取参数
+/**
+ * 数据抽取参数
+ */
 export interface DataExtractArgs {
     /// 需要从这个节点抽取数据
     doc: HTMLElement
@@ -97,7 +115,9 @@ export interface DataExtractArgs {
     smartOptions?: ExtractSmartOptions
 }
 
-/// HTTP 请求参数
+/**
+ * HTTP 请求参数
+ */
 export interface HttpCallArgs {
     url: string
     method: string
@@ -105,7 +125,9 @@ export interface HttpCallArgs {
     form_type?: 'json' | 'form'
 }
 
-/// 调用其他函数
+/**
+ * 调用其他函数
+ */
 export interface FuncCallArgs {
     // 函数的名称
     fn_name: string
@@ -113,7 +135,9 @@ export interface FuncCallArgs {
     fn_args: Record<string, any>
 }
 
-/// 抽取 URL 返回结果
+/**
+ * 抽取 URL 返回结果
+ */
 export interface ExtractLinkItem {
     // 目标 URL
     target_url: string
@@ -129,25 +153,55 @@ export interface ExtractLinkItem {
 
 export type ExtractLinkResult = ExtractLinkItem[]
 
+/**
+ * 监控规则记录
+ */
+export interface StorageMonitorRuleRecord {
+    rule_name: string
+    summary: string
+    md_detail: string
+
+    fetch_fn: string
+    diff_fn: string
+    view_fn: string
+}
+
+/**
+ * 数据提取结果记录
+ */
 export interface StorageCrawlResultRecord {
     id: number
 
+    /**
+     * 访问的源 URL
+     */
     url: string
-    /// 最终的 URL [一般跟 url 应该一样，除非 301 跳转等]
+    /**
+     * 最终的 URL [一般跟 url 应该一样，除非 301/302 跳转]
+     */
     final_url: string
+    /**
+     * 队列名称
+     */
     queue_name: string
 
     link_depth: number
-    /// 最后抓取到的数据
+    /**
+     * 获取到的数据
+     */
     extract_data: string | Record<string, any>
-    /// html 源文件
+    /**
+     * HTML 源代码
+     */
     html_raw: string
 
     snapshot_path: string | null
     rrweb_path: string | null
     video_path: string | null
-
-    // 耗时 单位毫秒
+    /**
+     * 耗时
+     * 单位:毫秒
+     */
     consume: number
 
     /// 创建时间
@@ -159,6 +213,9 @@ export interface BindingDbFunctions {
     crawl_queue_add: (newUrl: FnQueueUrl) => Promise<boolean>
 }
 
+/**
+ * 绑定的日志函数
+ */
 export interface BindingLogFunctions {
     /// 调试日志
     debug: (message: string, context?: Record<string, any>) => Promise<void>
@@ -219,6 +276,14 @@ export interface BindingCrawlFunctions extends BindingSharedFunctions {
     db: BindingDbFunctions,
 }
 
+/**
+ * 沙箱执行的函数
+ * 代码管理 -> 实验室 -> PLAYGROUND
+ * 沙箱的导出函数 应该具有所有运行环境的函数
+ */
+export interface BindingSandboxFunctions extends BindingKeywordFunctions, BindingCrawlFunctions {
+}
+
 export interface FnExecArgs {
     /// 当前调用的函数 名称
     fn_name: string
@@ -237,6 +302,9 @@ export interface FnExecResult extends Record<string, any> {
 }
 
 
+/**
+ * 数据提取 URL 消息队列
+ */
 export interface FnQueueUrl {
     queue_name: string   // 处理队列
     url: string          // target url
@@ -247,6 +315,9 @@ export interface FnQueueUrl {
 }
 
 
+/**
+ * 数据提取添加日志参数
+ */
 export interface CrawlAddLogArgs {
     // 网页的 URL
     url: string,
@@ -259,6 +330,9 @@ export interface CrawlAddLogArgs {
 }
 
 
+/**
+ * 日志记录
+ */
 export interface LogRecord {
     level: 'DEBUG' | 'INFO' | 'WARN' | 'ERROR'
     message: string
@@ -266,7 +340,9 @@ export interface LogRecord {
 }
 
 
-/// 本地通知提示
+/**
+ * 本地(操作系统)通知提示
+ */
 export interface LocalNotificationOptions {
     /**
      * 通知的标题
@@ -285,4 +361,78 @@ export interface EvaluateFuncType {
     code: string,
     /// 函数参数
     args: Record<string, any>
+}
+
+
+/**
+ * 函数参数信息
+ */
+export interface CodeFnArgConfig {
+    /**
+     * 参数名称
+     */
+    arg_name: string
+    /**
+     * 参数类型
+     */
+    arg_type: 'string' | 'number' | 'json'
+    /**
+     * 参数默认值
+     */
+    arg_value: string
+    /**
+     * 参数帮助信息
+     */
+    arg_help: string
+}
+
+
+/**
+ * 监控规则元信息字段
+ */
+export interface MonitorRuleMetaFields {
+    /**
+     * 规则名称
+     */
+    name: string
+    /**
+     * 简单介绍
+     */
+    summary: string
+    /**
+     * markdown 详情
+     */
+    markdown: string
+    /**
+     * 获取函数
+     */
+    fetch_fn: string
+    /**
+     * 展示函数
+     */
+    view_fn: string
+    /**
+     * 比较函数
+     * 用于判断页面内容是否变化
+     */
+    diff_fn: string
+}
+
+/**
+ * [MonitorRuleMetaFields.view_fn] 返回的结果
+ */
+export interface MonitorRuleViewBlock {
+    view_type: 'text_diff' | 'json' | 'title' | 'markdown'
+
+    // view_type == 'text_diff'
+    text_diff_blocks?: [number, string][]
+
+    // view_type == 'json
+    json_values?: { old_value: any, new_value: any }
+
+    // view_type == 'title'
+    title_text?: string
+
+    // view_type == 'markdown'
+    markdown_text?: string
 }
