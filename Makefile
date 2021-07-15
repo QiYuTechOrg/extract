@@ -19,3 +19,4 @@ build: build-src build-rule
 
 clean:
 	rm -rf src/**/*.js
+	rm -rf rule/**/*.js
