@@ -7,7 +7,7 @@ const argv = process.argv.slice(2);
 
 if (argv.length === 0) {
     console.log(`node build.mjs input-ts-file.ts ...`);
-    return;
+    process.exit(1);
 }
 
 
