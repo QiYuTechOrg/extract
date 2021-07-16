@@ -27,7 +27,7 @@ fs.readdirSync("src")
             return;
         }
 
-        console.assert(body.length === 2, "最多只能有两个节点")
+        console.assert(body.length === 2, "只能有两个节点");
 
         let importNode = body[0];
         console.assert(importNode.type === "ImportDeclaration")
