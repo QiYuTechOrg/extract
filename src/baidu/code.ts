@@ -1,7 +1,7 @@
 import {checkHumanCanView, checkIfNumber} from "../shared/utils";
 import {BindingKeywordFunctions, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
 
-let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData }> {
+export async function fn(args: FnExecArgs): Promise<{ data: SearchResultData }> {
     /// 必须在 baidu.com 中执行才有用
     if (!document.location.href.includes("baidu.com")) {
         return null;
