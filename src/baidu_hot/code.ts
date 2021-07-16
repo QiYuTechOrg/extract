@@ -1,9 +1,9 @@
-import {BindingSharedFunctions} from "../../src/shared/dt";
+import {BindingSharedFunctions} from "../shared/dt";
 
 /**
  * 获取 百度热搜 数据
  */
-let fn = async (fns: BindingSharedFunctions) => {
+let fn = async ({fns}: { fns: BindingSharedFunctions }) => {
     const ul = document.querySelector("#hotsearch-content-wrapper")
     if (!ul) {
         return;

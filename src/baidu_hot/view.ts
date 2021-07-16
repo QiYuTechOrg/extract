@@ -1,5 +1,5 @@
 import {DataType} from "./dt";
-import {MonitorRuleViewBlock} from "../../src/shared/dt";
+import {MonitorRuleViewBlock} from "../shared/dt";
 
 /**
  * 对比函数

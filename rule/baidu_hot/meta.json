@@ -1,8 +1,0 @@
-{
-  "name": "百度热搜",
-  "summary": "获取百度热搜信息",
-  "markdown": "doc.md",
-  "fetch_fn": "fetch.js",
-  "view_fn": "view.js",
-  "diff_fn": "diff.js"
-}
