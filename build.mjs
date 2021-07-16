@@ -2,16 +2,16 @@ import * as fs from "fs";
 import * as child_process from "child_process";
 import * as path from "path";
 
-const ts_source_list = [
-    "./src/baidu/code.ts",
-    "./src/baidu_hot/code.ts",
-    "./src/baidu_hot/view.ts",
-    "./src/google/code.ts",
-    "./src/qq_news/code.ts",
-];
+
+const argv = process.argv.slice(2);
+
+if (argv.length === 0) {
+    console.log(`node build.mjs input-ts-file.ts ...`);
+    return;
+}
 
 
-ts_source_list.map((ts_file) => {
+argv.map((ts_file) => {
     console.log('处理: ', ts_file, " ...");
 
     const dir_name = path.dirname(ts_file);
