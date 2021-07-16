@@ -26,7 +26,7 @@ ts_source_list.map((ts_file) => {
     const in_code = fs.readFileSync(js_file, {encoding: 'utf-8'});
 
     const out_code = `
-let fn = async (args) {
+let fn = async function (args) {
     const exports = ${in_code}
 
     return await exports.fn(args);
