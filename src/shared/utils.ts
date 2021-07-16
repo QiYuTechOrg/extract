@@ -1,10 +1,17 @@
 import {FnQueueUrl} from "./dt";
 
+/**
+ * 检测是否为数字
+ * @param s
+ */
 export function checkIfNumber(s: string) {
     return !isNaN(parseInt(s));
 }
 
-/// 忽略无效的数据
+/**
+ * 检测元素是否可以被人类看见
+ * @param e
+ */
 export function checkHumanCanView(e: HTMLElement) {
     if (e.style.display === 'none' || e.style.visibility === 'hidden') {
         console.log("element ", e, " is too hidden")
@@ -20,7 +27,10 @@ export function checkHumanCanView(e: HTMLElement) {
 }
 
 
-/// 删除 obj 重的空元素
+/**
+ * 删除 obj 中的空元素
+ * @param obj
+ */
 export function removeObjectEmptyValue(obj: Record<string, any>): Record<string, any> {
     return Object.fromEntries(
         Object.entries(obj).filter(([_, v]) => Boolean(v))
@@ -28,7 +38,10 @@ export function removeObjectEmptyValue(obj: Record<string, any>): Record<string,
 }
 
 
-/// 检测 URL 是否跟当前的页面是同一个域名
+/**
+ * 检测 URL 是否跟当前的页面是同一个域名
+ * @param url
+ */
 export function checkSameDomain(url: string): boolean {
     try {
         const u = new URL(url);
@@ -42,7 +55,11 @@ export function checkSameDomain(url: string): boolean {
 }
 
 
-/// 把多个链接转换成 消息队列
+/**
+ * 把多个链接转换成 消息队列
+ * @param as
+ * @param queue_name
+ */
 export function convertHrefsToQueue(
     as: HTMLAnchorElement[], {queue_name}: { queue_name: string }
 ): FnQueueUrl[] {
