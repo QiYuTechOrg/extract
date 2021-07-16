@@ -4,9 +4,9 @@ export default {
     input:   [
         'src/baidu/code.ts',
     ],
-    output:  {
+    output: {
         dir:    'src/baidu',
-        format: 'cjs',
+        format: 'iife',
     },
     plugins: [typescript({module: 'esnext'})],
 };
