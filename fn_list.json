@@ -1,5 +1,6 @@
 [
   "./src/baidu",
+  "./src/baidu_hot",
   "./src/google",
   "./src/qq_news"
 ]
