@@ -11,12 +11,12 @@
       "dom",
       "dom.iterable"
     ],
-    "removeComments": true,
+    "removeComments": false,
     "target": "ES2020",
     "noImplicitAny": false,
     "resolveJsonModule": true
   },
   "include": [
-    "src/**/code.ts"
+    "src/**/*.ts"
   ]
 }
