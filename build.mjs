@@ -1,20 +1,34 @@
 import * as fs from "fs";
+import * as child_process from "child_process";
+import * as path from "path";
 
-const need_convert = [
-    "./src/baidu/code.js",
+const ts_source_list = [
+    "./src/baidu/code.ts",
 ];
 
 
-need_convert.map((file) => {
-    const in_code = fs.readFileSync(file, {encoding: 'utf-8'});
+ts_source_list.map((ts_file) => {
+    console.log('处理: ', ts_file, " ...");
+
+    const dir_name = path.dirname(ts_file);
+    const base_name = path.basename(ts_file);
+    const js_file = `${dir_name}/${base_name.slice(0, base_name.length - 3)}.js`;
+
+    child_process.execFileSync("yarn",
+        ["rollup", "-i", ts_file, "-f", "iife", "-p", "typescript", "-d", dir_name],
+    );
+
+
+    const in_code = fs.readFileSync(js_file, {encoding: 'utf-8'});
 
     const out_code = `
 let fn = async (args) {
-    const exports = ${in_code};
+    const exports = ${in_code}
 
     return await exports.fn(args);
 }
-    `;
+`;
 
-    fs.writeFileSync(file, out_code);
+    fs.writeFileSync(js_file, out_code);
+    console.log('处理: ', ts_file, " 完成");
 });
