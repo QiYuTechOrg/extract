@@ -4,6 +4,10 @@ import * as path from "path";
 
 const ts_source_list = [
     "./src/baidu/code.ts",
+    "./src/baidu_hot/code.ts",
+    "./src/baidu_hot/view.ts",
+    "./src/google/code.ts",
+    "./src/qq_news/code.ts",
 ];
 
 

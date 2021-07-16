@@ -1,7 +1,7 @@
 import {checkHumanCanView, convertHrefsToQueue} from "../shared/utils";
 import {FnExecArgs, FnExecResult, FnQueueUrl} from "../shared/dt";
 
-let fn = async function (args: FnExecArgs): Promise<FnExecResult> {
+export async function fn(args: FnExecArgs): Promise<FnExecResult> {
     /// 检测是否为 腾讯新闻页面
     const allow_host = new Set(["news.qq.com", "new.qq.com"]);
     if (allow_host.has(document.location.host) === false) {

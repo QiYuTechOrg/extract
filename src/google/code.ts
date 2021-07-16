@@ -1,7 +1,7 @@
 import {checkIfNumber} from "../shared/utils";
 import {BindingKeywordFunctions, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
 
-let fn = async function (args: FnExecArgs): Promise<{ data: SearchResultData } | null> {
+export async function fn(args: FnExecArgs): Promise<{ data: SearchResultData } | null> {
     /// 检测是否在 google 域名下面
     if (!document.location.host.includes("google")) {
         return null;
