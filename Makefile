@@ -8,6 +8,9 @@ build:
 	node build.mjs
 
 
+build-rollup:
+	yarn rollup -i src/baidu/code.ts -f iife -p typescript -d src/baidu
+
 
 clean:
 	rm -rf src/**/*.js
