@@ -1,10 +1,7 @@
 
 build:
-	node build.mjs ./src/baidu/code.ts
-	node build.mjs ./src/baidu_hot/code.ts
-	node build.mjs ./src/baidu_hot/view.ts
-	node build.mjs ./src/google/code.ts
-	node build.mjs ./src/qq_news/code.ts
+	find src -name code.ts | xargs node build.mjs
+	find src -name view.ts | xargs node build.mjs
 
 clean:
-	rm -rf src/**/*.js
+	find src -name '*.js' | xargs rm -f
