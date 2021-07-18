@@ -6,7 +6,10 @@ import * as path from "path";
 const argv = process.argv.slice(2);
 
 if (argv.length === 0) {
-    console.log(`node build.mjs input-ts-file.ts ...`);
+    console.log(`node build.mjs input-ts-file.ts ...
+
+使用 rollup 把 ts 文件编译为可以使用的 js 函数
+`);
     process.exit(1);
 }
 
@@ -18,6 +21,7 @@ argv.map((ts_file) => {
     const base_name = path.basename(ts_file);
     const js_file = `${dir_name}/${base_name.slice(0, base_name.length - 3)}.js`;
 
+    // rollup 编译 ts 文件
     child_process.execFileSync("yarn",
         ["rollup", "-i", ts_file, "-f", "iife", "-p", "typescript", "-d", dir_name],
     );
