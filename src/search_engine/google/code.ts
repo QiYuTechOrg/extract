@@ -47,37 +47,17 @@ export async function fn(
             }).filter(Boolean)
     }
 
-    async function extractItem(e: HTMLDivElement): Promise<SearchResultItem> {
-        if (!e || !e.firstElementChild || !e.firstElementChild.firstElementChild) {
-            await fns.log.error(`e is invalid: ${e.outerHTML}`)
-            return null;
-        }
+    async function extractItem(g: HTMLDivElement): Promise<SearchResultItem> {
+        const last = g.querySelector('.IsZvec') as HTMLDivElement
 
-
-        const r = e.firstElementChild.firstElementChild;
-        if (!r.firstElementChild || !r.lastElementChild) {
-            await fns.log.error(`r not have enough children: ${r.outerHTML}`)
-            return null;
-        }
-
-
-        const first = r.firstElementChild as HTMLDivElement;
-        const last = r.lastElementChild as HTMLDivElement;
-
-        if (!first || !last) {
-            await fns.log.error(`first is: ${first} last is: ${last}`)
-            return null;
-        }
-
-        const a = first.querySelector("a");
+        const a = g.querySelector("a");
         if (!a) {
-            await fns.log.info(`first element is not find a: ${first.innerText}`)
             return null;
         }
 
         // google 默认获取不到 广告的内容
         return {
-            summary: last.innerText,
+            summary: last?.innerText || "",
             url: a.href,
             title: a.title,
             innerHtml: a.innerHTML,
