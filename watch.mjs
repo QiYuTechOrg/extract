@@ -14,6 +14,12 @@ if (argv.length === 0) {
 
 const watch_file = argv[0];
 
+console.log(`编译 ${watch_file} ...`);
+child_process.execSync(`node build.mjs "${watch_file}"`);
+console.log(`编译 ${watch_file} 完成`);
+
 fs.watchFile(watch_file, () => {
-    child_process.execSync(`node build.mjd "${watch_file}"`);
+    console.log(`${watch_file} 发生变化，重新编译...`);
+    child_process.execSync(`node build.mjs "${watch_file}"`);
+    console.log(`${watch_file} 编译完成`);
 });

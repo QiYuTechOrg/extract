@@ -1,0 +1,6 @@
+{
+  "name": "demo:args",
+  "summary": "返回传递给此函数的所有参数",
+  "fn_config": [
+  ]
+}
