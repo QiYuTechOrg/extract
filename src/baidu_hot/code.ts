@@ -1,9 +1,11 @@
-import {BindingSharedFunctions} from "../shared/dt";
+import {BindingMonitorFunctions, FnExecArgs} from "../shared/dt";
 
 /**
  * 获取 百度热搜 数据
  */
-export async function fn({fns}: { fns: BindingSharedFunctions }) {
+export async function fn(args: FnExecArgs<{ items: string[] }, BindingMonitorFunctions>) {
+    const fns = args.fns;
+
     const ul = document.querySelector("#hotsearch-content-wrapper")
     if (!ul) {
         return;
@@ -14,7 +16,7 @@ export async function fn({fns}: { fns: BindingSharedFunctions }) {
     const items = li_list.map((li: HTMLLIElement) => {
         const title = li.querySelector('.title-content-title') as HTMLSpanElement
         return title?.innerText
-    })
+    }).filter(Boolean)
 
     await fns.data.set({items})
 }

@@ -26,6 +26,36 @@ export interface SearchResultPage {
     url: string
 }
 
+
+/**
+ * 百度热搜
+ */
+export interface BaiduHotData {
+    position: number | string
+    title: string
+    url: string
+    inner_text: string
+    hot_value: string
+}
+
+/**
+ * 新闻信息
+ */
+export interface BaiduNewsData {
+    title: string
+    url: string
+    inner_text: string
+    from_src: string
+}
+
+/**
+ * 百度搜索返回的额外结果
+ */
+export interface BaiduExtraData {
+    hots?: BaiduHotData[]
+    news?: BaiduNewsData[]
+}
+
 /**
  * 搜索引擎返回的标准数据类型
  */
@@ -34,8 +64,10 @@ export interface SearchResultData {
     items: SearchResultItem[]
     // 相关搜索 关键词
     related: string[]
-    // 翻页
+    // 翻页 URL
     pages: SearchResultPage[]
+    // 百度搜索 额外的返回结果
+    baidu?: BaiduExtraData
 }
 
 /**
@@ -126,6 +158,14 @@ export interface HttpCallArgs {
 }
 
 /**
+ * 文本比较参数
+ */
+export interface TextDiffArgs {
+    t1: string
+    t2: string
+}
+
+/**
  * 调用其他函数
  */
 export interface FuncCallArgs {
@@ -153,18 +193,6 @@ export interface ExtractLinkItem {
 
 export type ExtractLinkResult = ExtractLinkItem[]
 
-/**
- * 监控规则记录
- */
-export interface StorageMonitorRuleRecord {
-    rule_name: string
-    summary: string
-    md_detail: string
-
-    fetch_fn: string
-    diff_fn: string
-    view_fn: string
-}
 
 /**
  * 数据提取结果记录
@@ -236,13 +264,13 @@ export interface BindingCacheFunctions {
     all: () => Promise<Record<string, any>>
 }
 
-export interface BindingDataFunctions {
-    set: (obj: Record<string, any>) => Promise<void>
-    get: () => Promise<Record<string, any>>
+export interface BindingDataFunctions<DataType extends Record<string, any>> {
+    set: (obj: DataType) => Promise<void>
+    get: () => Promise<DataType>
 }
 
 
-export interface BindingSharedFunctions {
+export interface BindingSharedFunctions<DataType extends Record<string, any>> {
     /// 截图
     snapshot: (element: string | HTMLElement) => Promise<string | null>,
     /// OCR 识别
@@ -263,17 +291,25 @@ export interface BindingSharedFunctions {
     /// cache 操作
     cache: BindingCacheFunctions
     /// 数据相关的操作
-    data: BindingDataFunctions
+    data: BindingDataFunctions<DataType>
     /// 本地通知
     notify: (args: LocalNotificationOptions) => Promise<boolean>
+    /// 文本比较
+    text_diff: (args: TextDiffArgs) => Promise<[number, string][]>
 }
 
-export interface BindingKeywordFunctions extends BindingSharedFunctions {
+export interface BindingKeywordFunctions<DataType = Record<string, any>> extends BindingSharedFunctions<DataType> {
 }
 
-export interface BindingCrawlFunctions extends BindingSharedFunctions {
+export interface BindingCrawlFunctions<DataType = Record<string, any>> extends BindingSharedFunctions<DataType> {
     /// 数据库相关的操作
     db: BindingDbFunctions,
+}
+
+/**
+ * 监控运行时函数
+ */
+export interface BindingMonitorFunctions<DataType = Record<string, any>> extends BindingSharedFunctions<DataType> {
 }
 
 /**
@@ -281,18 +317,30 @@ export interface BindingCrawlFunctions extends BindingSharedFunctions {
  * 代码管理 -> 实验室 -> PLAYGROUND
  * 沙箱的导出函数 应该具有所有运行环境的函数
  */
-export interface BindingSandboxFunctions extends BindingKeywordFunctions, BindingCrawlFunctions {
+export interface BindingSandboxFunctions<DataType = Record<string, any>>
+    extends BindingKeywordFunctions<DataType>,
+        BindingCrawlFunctions<DataType>,
+        BindingMonitorFunctions<DataType> {
 }
 
-export interface FnExecArgs {
+/**
+ *  函数执行的参数
+ */
+export interface FnExecArgs<DataType, FnsType = BindingSharedFunctions<DataType>> {
     /// 当前调用的函数 名称
     fn_name: string
     /// 函数的参数
     fn_args?: Record<string, any>
     /// 绑定的函数
-    fns: BindingCrawlFunctions    // 数据提取的时候
-        | BindingKeywordFunctions // 关键字搜索的时候
+    fns: FnsType
 }
+
+
+export interface MonitorExecResult {
+    // 获取数据是否成功
+    ok: boolean
+}
+
 
 /// 可以返回任意的值
 /// 注意: 个别字段有特殊的含义
@@ -386,37 +434,6 @@ export interface CodeFnArgConfig {
     arg_help: string
 }
 
-
-/**
- * 监控规则元信息字段
- */
-export interface MonitorRuleMetaFields {
-    /**
-     * 规则名称
-     */
-    name: string
-    /**
-     * 简单介绍
-     */
-    summary: string
-    /**
-     * markdown 详情
-     */
-    markdown: string
-    /**
-     * 获取函数
-     */
-    fetch_fn: string
-    /**
-     * 展示函数
-     */
-    view_fn: string
-    /**
-     * 比较函数
-     * 用于判断页面内容是否变化
-     */
-    diff_fn: string
-}
 
 /**
  * [MonitorRuleMetaFields.view_fn] 返回的结果

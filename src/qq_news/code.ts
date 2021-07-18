@@ -1,7 +1,9 @@
 import {checkHumanCanView, convertHrefsToQueue} from "../shared/utils";
-import {FnExecArgs, FnExecResult, FnQueueUrl} from "../shared/dt";
+import {BindingCrawlFunctions, FnExecArgs, FnExecResult, FnQueueUrl} from "../shared/dt";
 
-export async function fn(args: FnExecArgs): Promise<FnExecResult> {
+export async function fn(
+    args: FnExecArgs<Record<string, string>, BindingCrawlFunctions>
+): Promise<FnExecResult> {
     /// 检测是否为 腾讯新闻页面
     const allow_host = new Set(["news.qq.com", "new.qq.com"]);
     if (allow_host.has(document.location.host) === false) {
@@ -73,8 +75,8 @@ export async function fn(args: FnExecArgs): Promise<FnExecResult> {
     }
 
 
-    return {
+    await args.fns.data.set({
         queue_url: [...extractTopList(), ...extractHot()],
         data: extractNewsContent(),
-    }
+    })
 }

@@ -1,5 +1,5 @@
 {
-  "name": "google",
+  "name": "poc:google",
   "summary": "从 Google 搜索返回的HTML中提取信息",
   "fn_config": [
   ]

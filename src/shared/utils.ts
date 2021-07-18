@@ -12,9 +12,9 @@ export function checkIfNumber(s: string) {
  * 检测元素是否可以被人类看见
  * @param e
  */
-export function checkHumanCanView(e: HTMLElement) {
+export function checkHumanCanView(e: HTMLElement): boolean {
     if (e.style.display === 'none' || e.style.visibility === 'hidden') {
-        console.log("element ", e, " is too hidden")
+        console.log("element ", e, " is hidden")
         return false;
     }
     const rect = e.getBoundingClientRect();
@@ -24,6 +24,14 @@ export function checkHumanCanView(e: HTMLElement) {
     }
 
     return true;
+}
+
+/**
+ * 检测域名后缀
+ * @param domain
+ */
+export function checkDomain(domain: string): boolean {
+    return document.location.href.endsWith(domain)
 }
 
 

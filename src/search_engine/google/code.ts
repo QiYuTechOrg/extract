@@ -1,7 +1,15 @@
-import {checkIfNumber} from "../shared/utils";
-import {BindingKeywordFunctions, FnExecArgs, SearchResultData, SearchResultItem, SearchResultPage} from "../shared/dt";
+import {checkIfNumber} from "../../shared/utils";
+import {
+    BindingKeywordFunctions,
+    FnExecArgs,
+    SearchResultData,
+    SearchResultItem,
+    SearchResultPage
+} from "../../shared/dt";
 
-export async function fn(args: FnExecArgs): Promise<{ data: SearchResultData } | null> {
+export async function fn(
+    args: FnExecArgs<SearchResultData, BindingKeywordFunctions<SearchResultData>>
+): Promise<void> {
     /// 检测是否在 google 域名下面
     if (!document.location.host.includes("google")) {
         return null;
@@ -36,8 +44,7 @@ export async function fn(args: FnExecArgs): Promise<{ data: SearchResultData } |
                     return null
                 }
                 return {page: parseInt(a.innerText), url: a.href}
-            })
-            .filter((t) => t !== null)
+            }).filter(Boolean)
     }
 
     async function extractItem(e: HTMLDivElement): Promise<SearchResultItem> {
