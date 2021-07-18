@@ -46,7 +46,7 @@ export async function fn(
                 }
 
                 return {
-                    position: index,
+                    position: index + 1,
                     title: a.title,
                     url: a.href,
                     inner_text: a.innerText,
@@ -132,7 +132,7 @@ export async function fn(
                     title: a.title,
                     url: a.href,
                     inner_text: a.innerText,
-                    from_src: a.nextElementSibling?.innerHTML ?? ""
+                    from_src: (a.nextElementSibling as HTMLSpanElement)?.innerText ?? ""
                 } as BaiduNewsData
             }).filter(Boolean)
         }).filter(Boolean).flat()

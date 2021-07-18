@@ -31,7 +31,7 @@ export function checkHumanCanView(e: HTMLElement): boolean {
  * @param domain
  */
 export function checkDomain(domain: string): boolean {
-    return document.location.href.endsWith(domain)
+    return document.location.hostname.endsWith(domain)
 }
 
 
