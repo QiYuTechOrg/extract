@@ -38,13 +38,16 @@ export interface BaiduHotData {
     hot_value: string
 }
 
-/**
- * 新闻信息
- */
-export interface BaiduNewsData {
+export interface GenericNewsData {
     title: string
     url: string
     inner_text: string
+}
+
+/**
+ * 新闻信息
+ */
+export interface BaiduNewsData extends GenericNewsData {
     from_src: string
 }
 
@@ -54,6 +57,13 @@ export interface BaiduNewsData {
 export interface BaiduExtraData {
     hots?: BaiduHotData[]
     news?: BaiduNewsData[]
+}
+
+export interface GoogleNewsData extends GenericNewsData {
+}
+
+export interface GoogleExtraData {
+    news?: GoogleNewsData[]
 }
 
 /**
@@ -66,8 +76,10 @@ export interface SearchResultData {
     related: string[]
     // 翻页 URL
     pages: SearchResultPage[]
-    // 百度搜索 额外的返回结果
+    // 百度搜索 额外的数据
     baidu?: BaiduExtraData
+    // Google搜索 额外的数据
+    google?: GoogleExtraData
 }
 
 /**

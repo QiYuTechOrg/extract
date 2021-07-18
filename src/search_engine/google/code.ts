@@ -2,6 +2,7 @@ import {checkIfNumber} from "../../shared/utils";
 import {
     BindingKeywordFunctions,
     FnExecArgs,
+    GoogleNewsData,
     SearchResultData,
     SearchResultItem,
     SearchResultPage
@@ -15,7 +16,7 @@ export async function fn(
         return null;
     }
 
-    const fns = args.fns as BindingKeywordFunctions
+    const fns = args.fns
 
     function extractRelated(): string[] {
         const d = document.getElementById("botstuff")
@@ -74,9 +75,31 @@ export async function fn(
 
     const items = (await Promise.all([...content.querySelectorAll(".g")].map(extractItem))).filter(Boolean);
 
+    function extractNews(): GoogleNewsData[] {
+        // google 会针对不同的浏览器优化搜索结果
+        const firefox_list = [...document.querySelectorAll('.EPLo7b')]
+        const chrome_list = document.querySelectorAll('[jscontroller="eJCXmc"]')
+
+        return [...firefox_list, ...chrome_list].map((div: HTMLDivElement) => {
+            const a = div.querySelector('a') as HTMLAnchorElement
+            if (!a) {
+                return null;
+            }
+
+            return {
+                title: a.title,
+                url: a.href,
+                inner_text: a.innerText,
+            } as GoogleNewsData
+        }).filter(Boolean).flat()
+    }
+
     await fns.data.set({
         items: items,
         pages: extractPages(),
         related: extractRelated(),
+        google: {
+            news: extractNews(),
+        }
     })
 }
