@@ -1,4 +1,4 @@
-import {checkDomain, checkHumanCanView} from "../../shared/utils";
+import {checkDomain, checkHumanCanView, sleep} from "../../shared/utils";
 import {
     BindingKeywordFunctions,
     FnExecArgs,
@@ -9,11 +9,9 @@ import {
 
 export async function fn(
     args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
-):
-    Promise<void> {
-    if (!
-        checkDomain("duckduckgo.com")
-    ) {
+): Promise<void> {
+
+    if (!checkDomain("duckduckgo.com")) {
         return
     }
 
@@ -42,7 +40,7 @@ export async function fn(
             const summary = s1?.innerText || ""
 
             const a = div.querySelector('.result__title > a') as HTMLAnchorElement
-            if (!a || !checkHumanCanView(a)) {
+            if (!checkHumanCanView(a)) {
                 return
             }
 
@@ -58,6 +56,21 @@ export async function fn(
         }).filter(Boolean)
     }
 
+
+    async function waitForLoadData() {
+        for (let t = 5 * 1000; t > 0; t = t - 20) {
+            const m = document.querySelector('#links')
+            if (m && m.innerHTML.trim() !== "") {
+                console.log("result is:", m.innerHTML)
+                break;
+            } else {
+                await sleep(20)
+            }
+        }
+    }
+
+
+    await waitForLoadData()
 
     await args.fns.data.set({
         items: extractItems(),
