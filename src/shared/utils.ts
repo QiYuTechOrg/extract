@@ -13,6 +13,9 @@ export function checkIfNumber(s: string) {
  * @param e
  */
 export function checkHumanCanView(e: HTMLElement): boolean {
+    if (!e) {
+        return false
+    }
     if (e.style.display === 'none' || e.style.visibility === 'hidden') {
         console.log("element ", e, " is hidden")
         return false;
@@ -80,4 +83,25 @@ export function convertHrefsToQueue(
             inner_html: a.innerHTML,
         }
     })
+}
+
+
+export async function sleep(ms: number): Promise<void> {
+    function wait(ms: number) {
+        return new Promise(resolve => setTimeout(() => resolve(null), ms));
+    }
+
+    await wait(ms);
+}
+
+
+/**
+ * 搜索 text
+ * @param text
+ * @param node
+ */
+export function getByText(text: string, node: HTMLElement = null): HTMLElement {
+    const p = node || document.body
+    const ret = document.evaluate(`//*[normalize-space(text()) = '${text}']`, p)
+    return ret.iterateNext() as HTMLElement
 }

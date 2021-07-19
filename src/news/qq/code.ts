@@ -1,8 +1,8 @@
-import {checkHumanCanView, convertHrefsToQueue} from "../shared/utils";
-import {BindingCrawlFunctions, FnExecArgs, FnExecResult, FnQueueUrl} from "../shared/dt";
+import {checkHumanCanView, convertHrefsToQueue} from "../../shared/utils";
+import {BindingCrawlFunctions, FnExecArgs, FnExecResult, FnQueueUrl} from "../../shared/dt";
 
 export async function fn(
-    args: FnExecArgs<Record<string, string>, BindingCrawlFunctions>
+    args: FnExecArgs<Record<string, never>, Record<string, string>, BindingCrawlFunctions>
 ): Promise<FnExecResult> {
     /// 检测是否为 腾讯新闻页面
     const allow_host = new Set(["news.qq.com", "new.qq.com"]);

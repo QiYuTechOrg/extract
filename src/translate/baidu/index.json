@@ -1,0 +1,12 @@
+{
+  "name": "poc:translate:baidu",
+  "summary": "从百度翻译Web版本中提取翻译结果",
+  "fn_config": [
+    {
+      "arg_name": "timeout",
+      "arg_type": "number",
+      "arg_value": 30000,
+      "arg_help": "翻译请求超时时间"
+    }
+  ]
+}

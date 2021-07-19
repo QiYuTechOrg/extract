@@ -8,7 +8,7 @@ import {
 } from "../../shared/dt";
 
 export async function fn(
-    args: FnExecArgs<SearchResultData, BindingKeywordFunctions<SearchResultData>>
+    args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
 ): Promise<void> {
     if (!checkDomain("so.com")) {
         return

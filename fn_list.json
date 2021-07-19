@@ -1,6 +1,13 @@
 [
-  "./src/baidu",
   "./src/baidu_hot",
-  "./src/google",
-  "./src/qq_news"
+  "./src/demo/args",
+  "./src/news/qq",
+  "./src/search_engine/360",
+  "./src/search_engine/baidu",
+  "./src/search_engine/bing",
+  "./src/search_engine/duckduckgo",
+  "./src/search_engine/google",
+  "./src/search_engine/sogou",
+  "./src/search_engine/yahoo",
+  "./src/translate/baidu"
 ]

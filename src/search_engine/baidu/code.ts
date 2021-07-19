@@ -10,7 +10,7 @@ import {
 } from "../../shared/dt";
 
 export async function fn(
-    args: FnExecArgs<SearchResultData, BindingKeywordFunctions<SearchResultData>>
+    args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
 ): Promise<void> {
     /// 必须在 baidu.com 中执行才有用
     if (!checkDomain("baidu.com")) {

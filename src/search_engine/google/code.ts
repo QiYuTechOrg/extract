@@ -9,7 +9,7 @@ import {
 } from "../../shared/dt";
 
 export async function fn(
-    args: FnExecArgs<SearchResultData, BindingKeywordFunctions<SearchResultData>>
+    args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
 ): Promise<void> {
     /// 检测是否在 google 域名下面
     if (!document.location.host.includes("google")) {

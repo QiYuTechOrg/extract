@@ -1,4 +1,31 @@
 /**
+ * 翻译参数
+ */
+export interface TranslateArgs {
+    text: string
+    src_lang: string
+    dst_lang: string
+    // 超时时间
+    timeout: number
+}
+
+/**
+ * 翻译的结果
+ */
+export interface TranslateData {
+    src_lang: string
+    src_text: string
+
+    dst_lang: string
+    dst_text: string
+}
+
+export interface TranslateResult extends GenericEvalResult {
+    // 翻译的结果
+    result?: TranslateData
+}
+
+/**
  * 搜索引擎返回的结果
  */
 export interface SearchResultItem {
@@ -83,18 +110,24 @@ export interface SearchResultData {
 }
 
 /**
+ * 通用的执行结果
+ */
+interface GenericEvalResult {
+    /// 无法正常获取代码
+    code_error?: boolean
+    /// 无法打开新页面 [通常是因为浏览器配置错误]
+    page_error?: boolean
+}
+
+/**
  * 搜索引擎返回的字段信息
  */
-export interface KeywordSearchResult {
+export interface KeywordSearchResult extends GenericEvalResult {
     /// 搜索引擎的名字 [必须有表示这个信息是那个搜索引擎产生的]
     se_name: string
     /// 搜索的关键字
     keyword: string
 
-    /// 无法正常获取 code
-    code_error?: boolean
-    /// 无法打开新页面 [通常是因为浏览器配置错误]
-    page_error?: boolean
     /// 搜索结果
     search_result?: SearchResultData
     /// 函数的日志记录
@@ -338,11 +371,11 @@ export interface BindingSandboxFunctions<DataType = Record<string, any>>
 /**
  *  函数执行的参数
  */
-export interface FnExecArgs<DataType, FnsType = BindingSharedFunctions<DataType>> {
+export interface FnExecArgs<ArgsType extends Record<string, any>, DataType, FnsType extends BindingSharedFunctions<DataType>> {
     /// 当前调用的函数 名称
     fn_name: string
     /// 函数的参数
-    fn_args?: Record<string, any>
+    fn_args?: ArgsType
     /// 绑定的函数
     fns: FnsType
 }

@@ -3,7 +3,9 @@ import {BindingMonitorFunctions, FnExecArgs} from "../shared/dt";
 /**
  * 获取 百度热搜 数据
  */
-export async function fn(args: FnExecArgs<{ items: string[] }, BindingMonitorFunctions>) {
+export async function fn(
+    args: FnExecArgs<Record<string, never>, { items: string[] }, BindingMonitorFunctions<{ items: string[] }>>
+) {
     const fns = args.fns;
 
     const ul = document.querySelector("#hotsearch-content-wrapper")
