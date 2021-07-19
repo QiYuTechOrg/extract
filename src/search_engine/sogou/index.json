@@ -1,0 +1,6 @@
+{
+  "name": "poc:se:搜狗",
+  "summary": "从搜狗返回的HTML中提取信息",
+  "fn_config": [
+  ]
+}
