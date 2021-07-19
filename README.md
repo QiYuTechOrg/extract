@@ -6,6 +6,10 @@
 
 [文档地址](https://oss.qiyutech.tech/seo/extract/index.html)
 
+# 下载
+
+您可以从 [GitHub Actions](https://github.com/QiYuTechOrg/extract/actions) 下载编译好的代码
+
 # 构建
 
 ```shell
