@@ -30,3 +30,12 @@ jobs:
       - name: 编译
         run: |
           make build
+
+      - name: 打包
+        run: |
+          zip extract.zip -r src fn_list.json
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: extract
+          path: extract.zip
