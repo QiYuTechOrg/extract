@@ -1,0 +1,6 @@
+{
+  "name": "poc:se:bing",
+  "summary": "从Bing返回的HTML中提取信息",
+  "fn_config": [
+  ]
+}
