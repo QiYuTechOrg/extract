@@ -13,6 +13,6 @@
 # 构建
 
 ```shell
-yarn install
+npm install
 make build
 ```
