@@ -1,5 +1,5 @@
 {
-  "name": "poc:baidu",
+  "name": "poc:se:baidu",
   "summary": "从百度搜索返回的HTML中提取信息",
   "fn_config": [
   ]

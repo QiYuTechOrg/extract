@@ -1,5 +1,5 @@
 {
-  "name": "poc:360",
+  "name": "poc:se:360",
   "summary": "从360返回的HTML中提取信息",
   "fn_config": [
   ]
