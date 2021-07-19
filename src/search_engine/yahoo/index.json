@@ -1,0 +1,6 @@
+{
+  "name": "poc:se:yahoo",
+  "summary": "从Yahoo返回的HTML中提取信息",
+  "fn_config": [
+  ]
+}

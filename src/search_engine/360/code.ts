@@ -24,7 +24,7 @@ export async function fn(
     function extractPages(): SearchResultPage[] {
         return [...document.querySelectorAll('#page > a')].map((a: HTMLAnchorElement) => {
             return {
-                page: Number(a.innerText),
+                page: Number(a.innerText) || 0,
                 url: a.href,
             } as SearchResultPage
         })

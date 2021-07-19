@@ -10,19 +10,22 @@ import {
 export async function fn(
     args: FnExecArgs<SearchResultData, BindingKeywordFunctions<SearchResultData>>
 ): Promise<void> {
-    if (!checkDomain("bing.com")) {
+    if (!checkDomain("yahoo.com")) {
         return
     }
 
     function extractRelated(): string[] {
-        return [...document.querySelectorAll('.b_rs > ul > li > a')]
+        return [...document.querySelectorAll('.compTable a')]
             .map((a: HTMLAnchorElement) => {
-                return a.innerText
-            })
+                if (checkHumanCanView(a)) {
+                    return a.innerText
+                }
+                return null
+            }).filter(Boolean)
     }
 
     function extractPages(): SearchResultPage[] {
-        return [...document.querySelectorAll('.sb_pagF > li > a')].map((a: HTMLAnchorElement) => {
+        return [...document.querySelectorAll('.pages > a')].map((a: HTMLAnchorElement) => {
             return {
                 page: Number(a.innerText) || 0,
                 url: a.href,
@@ -31,15 +34,16 @@ export async function fn(
     }
 
     function extractItems(): SearchResultItem[] {
-        return [...document.querySelectorAll('.b_algo')].map((div: HTMLDivElement) => {
+        return [...document.querySelectorAll('#web > ol > li')].map((div: HTMLDivElement) => {
             if (!checkHumanCanView(div)) {
-                return null
+                return
             }
 
-            const s1 = div.querySelector('.b_caption') as HTMLSpanElement
+
+            const s1 = div.querySelector('.compText') as HTMLSpanElement
             const summary = s1?.innerText || ""
 
-            const a = div.querySelector('h2 > a') as HTMLAnchorElement
+            const a = div.querySelector('.compTitle a') as HTMLAnchorElement
             if (!a || !checkHumanCanView(a)) {
                 return
             }
