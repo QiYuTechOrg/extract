@@ -10,7 +10,7 @@ import {
 export async function fn(
     args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
 ): Promise<void> {
-    if (!checkDomain("duckduckgo.com")) {
+    if (!checkDomain("sogou.com")) {
         return
     }
 
