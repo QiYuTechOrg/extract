@@ -1,7 +1,9 @@
 {
   "license": "UNLICENSED",
   "scripts": {
-    "build": "parcel build ./*/*.ts"
+  },
+  "dependencies": {
+    "@testing-library/dom": "^8.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
