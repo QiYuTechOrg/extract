@@ -1,0 +1,6 @@
+{
+  "name": "poc:se:ddg",
+  "summary": "从DuckDuckGo返回的HTML中提取信息",
+  "fn_config": [
+  ]
+}
