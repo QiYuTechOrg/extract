@@ -23,7 +23,7 @@ jobs:
 
       - name: 安装依赖
         run: |
-          yarn install
+          npm install
 
       - name: 编译
         run: |
