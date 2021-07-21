@@ -315,9 +315,36 @@ export interface BindingDataFunctions<DataType extends Record<string, any>> {
 }
 
 
+export interface SnapshotV2Result {
+    base64_img: string
+    file_path?: string
+}
+
+export interface OnRequestArgs {
+    req: {
+        url: string
+        failure: string | null
+        headers: Record<string, string>,
+        method: string,
+        post_data: string | null
+    },
+    res: {
+        status: number | null
+        headers: Record<string, string>
+        text: string
+        data: Buffer
+    }
+}
+
 export interface BindingSharedFunctions<DataType extends Record<string, any>> {
     /// 截图
     snapshot: (element: string | HTMLElement) => Promise<string | null>,
+    /**
+     * 截图 v2
+     * @param element 截图的元素
+     * @param save 是否保存到文件
+     */
+    snapshot_v2: (element: string | HTMLElement, save: boolean) => Promise<SnapshotV2Result>
     /// OCR 识别
     ocr: (element: string | HTMLElement) => Promise<string | null>,
     /// 点击
@@ -341,6 +368,8 @@ export interface BindingSharedFunctions<DataType extends Record<string, any>> {
     notify: (args: LocalNotificationOptions) => Promise<boolean>
     /// 文本比较
     text_diff: (args: TextDiffArgs) => Promise<[number, string][]>
+    /// 当网页发生请求的时候
+    on_request: (callback: (data: OnRequestArgs) => Promise<void>) => Promise<void>
 }
 
 export interface BindingKeywordFunctions<DataType = Record<string, any>> extends BindingSharedFunctions<DataType> {
