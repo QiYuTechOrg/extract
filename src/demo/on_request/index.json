@@ -1,0 +1,6 @@
+{
+  "name": "demo:on_request",
+  "summary": "获取请求数据测试",
+  "fn_config": [
+  ]
+}
