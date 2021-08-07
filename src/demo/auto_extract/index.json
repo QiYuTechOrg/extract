@@ -1,0 +1,6 @@
+{
+  "name": "demo:auto_extract",
+  "summary": "测试自动抽取函数",
+  "fn_config": [
+  ]
+}

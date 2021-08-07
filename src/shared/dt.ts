@@ -1,3 +1,6 @@
+import {CodeFnArgConfig, CodeFnQueueConfig} from "./gen/dt";
+
+
 /**
  * 翻译参数
  */
@@ -370,6 +373,8 @@ export interface BindingSharedFunctions<DataType extends Record<string, any>> {
     text_diff: (args: TextDiffArgs) => Promise<[number, string][]>
     /// 当网页发生请求的时候
     on_request: (callback: (data: OnRequestArgs) => Promise<void>) => Promise<void>
+    // 自动提取页面内容
+    auto_extract: () => Promise<Record<string, any>>
 }
 
 export interface BindingKeywordFunctions<DataType = Record<string, any>> extends BindingSharedFunctions<DataType> {
@@ -487,29 +492,6 @@ export interface EvaluateFuncType {
 
 
 /**
- * 函数参数信息
- */
-export interface CodeFnArgConfig {
-    /**
-     * 参数名称
-     */
-    arg_name: string
-    /**
-     * 参数类型
-     */
-    arg_type: 'string' | 'number' | 'json'
-    /**
-     * 参数默认值
-     */
-    arg_value: string
-    /**
-     * 参数帮助信息
-     */
-    arg_help: string
-}
-
-
-/**
  * [MonitorRuleMetaFields.view_fn] 返回的结果
  */
 export interface MonitorRuleViewBlock {
@@ -527,3 +509,19 @@ export interface MonitorRuleViewBlock {
     // view_type == 'markdown'
     markdown_text?: string
 }
+
+
+/**
+ * 代码 index.json 配置文件的内容
+ */
+export interface CodeIndexJson {
+    // 函数名
+    name: string
+    // 简介
+    summary: string
+    // 这个函数的参数配置
+    fn_config?: CodeFnArgConfig[]
+    // 这个函数产生的队列
+    fn_queue?: CodeFnQueueConfig[]
+}
+
