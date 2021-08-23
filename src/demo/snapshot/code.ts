@@ -1,7 +1,7 @@
-import {BindingSandboxFunctions, FnExecArgs} from "../../shared/dt";
+import {FnExecArgsV2} from "../../shared/dt_core";
 
 export async function fn(
-    args: FnExecArgs<Record<string, never>, Record<string, any>, BindingSandboxFunctions>
+    args: FnExecArgsV2<Record<string, never>, Record<string, any>>
 ): Promise<void> {
     console.log(args)
 

@@ -1,15 +1,9 @@
 import {checkIfNumber} from "../../shared/utils";
-import {
-    BindingKeywordFunctions,
-    FnExecArgs,
-    GoogleNewsData,
-    SearchResultData,
-    SearchResultItem,
-    SearchResultPage
-} from "../../shared/dt";
+import {GoogleNewsData, SearchResultData, SearchResultItem, SearchResultPage} from "../../shared/dt";
+import {FnExecArgsV2} from "../../shared/dt_core";
 
 export async function fn(
-    args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
+    args: FnExecArgsV2<Record<string, never>, SearchResultData>
 ): Promise<void> {
     /// 检测是否在 google 域名下面
     if (!document.location.host.includes("google")) {

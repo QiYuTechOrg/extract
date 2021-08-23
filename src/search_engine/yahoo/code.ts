@@ -1,14 +1,9 @@
 import {checkDomain, checkHumanCanView} from "../../shared/utils";
-import {
-    BindingKeywordFunctions,
-    FnExecArgs,
-    SearchResultData,
-    SearchResultItem,
-    SearchResultPage
-} from "../../shared/dt";
+import {SearchResultData, SearchResultItem, SearchResultPage} from "../../shared/dt";
+import {FnExecArgsV2} from "../../shared/dt_core";
 
 export async function fn(
-    args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
+    args: FnExecArgsV2<Record<string, never>, SearchResultData>
 ): Promise<void> {
     if (!checkDomain("yahoo.com")) {
         return

@@ -1,9 +1,8 @@
 import {checkDomain, checkHumanCanView, getByText, sleep} from "../../shared/utils";
-import {BindingSharedFunctions, FnExecArgs, TranslateArgs, TranslateResult} from "../../shared/dt";
+import {TranslateArgs, TranslateResult} from "../../shared/dt";
+import {FnExecArgsV2} from "../../shared/dt_core";
 
-export async function fn(
-    args: FnExecArgs<TranslateArgs, TranslateResult, BindingSharedFunctions<TranslateResult>>
-): Promise<void> {
+export async function fn(args: FnExecArgsV2<TranslateArgs, TranslateResult>): Promise<void> {
     if (!checkDomain("fanyi.baidu.com")) {
         return
     }

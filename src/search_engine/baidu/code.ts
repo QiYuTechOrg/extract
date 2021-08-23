@@ -1,16 +1,9 @@
 import {checkDomain, checkHumanCanView, checkIfNumber} from "../../shared/utils";
-import {
-    BaiduHotData,
-    BaiduNewsData,
-    BindingKeywordFunctions,
-    FnExecArgs,
-    SearchResultData,
-    SearchResultItem,
-    SearchResultPage
-} from "../../shared/dt";
+import {BaiduHotData, BaiduNewsData, SearchResultData, SearchResultItem, SearchResultPage} from "../../shared/dt";
+import {FnExecArgsV2} from "../../shared/dt_core";
 
 export async function fn(
-    args: FnExecArgs<Record<string, never>, SearchResultData, BindingKeywordFunctions<SearchResultData>>
+    args: FnExecArgsV2<Record<string, never>, SearchResultData>
 ): Promise<void> {
     /// 必须在 baidu.com 中执行才有用
     if (!checkDomain("baidu.com")) {

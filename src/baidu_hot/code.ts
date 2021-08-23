@@ -1,11 +1,9 @@
-import {BindingMonitorFunctions, FnExecArgs} from "../shared/dt";
+import {FnExecArgsV2, FnExecResult} from "../shared/dt_core";
 
 /**
  * 获取 百度热搜 数据
  */
-export async function fn(
-    args: FnExecArgs<Record<string, never>, { items: string[] }, BindingMonitorFunctions<{ items: string[] }>>
-) {
+export async function fn(args: FnExecArgsV2<Record<string, never>, { items: string[] }>): Promise<FnExecResult> {
     const fns = args.fns;
 
     const ul = document.querySelector("#hotsearch-content-wrapper")
