@@ -5,6 +5,11 @@ export interface AcListResp {
     data: string[] /* 自动补全列表 */
 }
 
+export interface BrowserAddResp {
+    ok: boolean /* 添加成功 */
+    reason?: string /* 失败的原因 */
+}
+
 export interface BrowserAddArgs {
     worker_name: string /* 工作进程名称 */
     browser_name: string /* 浏览器名称 */
@@ -31,6 +36,141 @@ export interface CodeFnArgConfig {
     arg_type: string /* 参数类型 */
     arg_value: string /* 参数默认值 */
     arg_help: string /* 帮助信息 */
+}
+
+export interface CrawlTaskV2Config {
+    queue_name: string /* 队列名称 */
+    fn_name: string /* 函数名 */
+    fn_config?: CodeFnArgConfig[] /* 函数参数配置 */
+}
+
+export interface CrawlTaskGenericConfig {
+    v2?: CrawlTaskV2Config[] /* V2配置 */
+}
+
+export interface CCTaskDetailData {
+    task_name: string /* 任务名称 */
+    task_config: CrawlTaskGenericConfig /* 数据提取配置 */
+    task_desc: string /* 任务描述 */
+    urls: string /* URL列表 */
+    browser_name: string /* 浏览器名称 */
+    concurrent?: number /* 并发 */
+    cron_rule: string /* 定时规则 */
+    page_timeout?: number /* 页面超时时间 */
+    record_snapshot?: boolean /* 截图 */
+    record_rrweb?: boolean /* RRWEB */
+    record_video?: boolean /* 视频 */
+    username: string /* 用户名 */
+    cc_job_id: number /* 工作ID */
+    pre_time?: string /* Pre Time */
+    next_time: string /* Next Time */
+    run_state: string /* 运行状态 */
+    disable: boolean /* 禁用 */
+    ctime: string /* 创建时间 */
+}
+
+export interface CCJobDetailData {
+    username: string /* 用户名 */
+    cc_name: string /* 持续提取任务名称 */
+    cc_desc: string /* 持续提取任务描述 */
+    task_list: CCTaskDetailData[] /* 任务列表 */
+}
+
+export interface CCJobTaskArgs {
+    task_name: string /* 任务名称 */
+    task_config: CrawlTaskGenericConfig /* 数据提取配置 */
+    task_desc: string /* 任务描述 */
+    urls: string /* URL列表 */
+    browser_name: string /* 浏览器名称 */
+    concurrent?: number /* 并发 */
+    cron_rule: string /* 定时规则 */
+    page_timeout?: number /* 页面超时时间 */
+    record_snapshot?: boolean /* 截图 */
+    record_rrweb?: boolean /* RRWEB */
+    record_video?: boolean /* 视频 */
+}
+
+export interface CCJobAddArgs {
+    cc_name: string /* 持续提取任务名称 */
+    cc_desc: string /* 持续提取任务描述 */
+    task_list: CCJobTaskArgs[] /* 任务列表 */
+}
+
+export interface CCJobDeleteResp {
+    ok: boolean /* 删除成功 */
+    reason?: string /* 原因 */
+}
+
+export interface CCJobDeleteArgs {
+    cc_name: string /* 持续提取任务名称 */
+}
+
+export interface CCJobListResp {
+    page_no?: number /* 页数 */
+    page_size?: number /* 分页大小 */
+    data: CCJobDetailData[] /* 详细数据 */
+}
+
+export interface CCJobListArgs {
+    page_no?: number /* 页数 */
+    page_size?: number /* 分页大小 */
+    cc_name?: string /* 搜索名称 */
+}
+
+export interface CCJobTotalResp {
+    total: number /* 持续提取工作数量 */
+}
+
+export interface CCTaskAddResp {
+    errno: number /* 错误码 */
+    errmsg?: string /* 错误信息 */
+    data: CCTaskDetailData /* 详细数据 */
+}
+
+export interface CCTaskAddArgs {
+    task_name: string /* 任务名称 */
+    task_config: CrawlTaskGenericConfig /* 数据提取配置 */
+    task_desc: string /* 任务描述 */
+    urls: string /* URL列表 */
+    browser_name: string /* 浏览器名称 */
+    concurrent?: number /* 并发 */
+    cron_rule: string /* 定时规则 */
+    page_timeout?: number /* 页面超时时间 */
+    record_snapshot?: boolean /* 截图 */
+    record_rrweb?: boolean /* RRWEB */
+    record_video?: boolean /* 视频 */
+    cc_name: string /* 工作名称 */
+}
+
+export interface CCTaskDeleteResp {
+    ok: boolean /* 删除完成 */
+    reason?: string /* Reason */
+}
+
+export interface CCTaskNameArgs {
+    cc_name: string /* 工作名称 */
+    task_name: string /* 任务名称 */
+}
+
+export interface CCTaskListResp {
+    page_no?: number /* 页数 */
+    page_size?: number /* 分页大小 */
+    data: CCTaskDetailData[] /* 详细数据 */
+}
+
+export interface CCTaskListArgs {
+    page_no?: number /* 页数 */
+    page_size?: number /* 分页大小 */
+    cc_name?: string /* 工作名称 */
+    task_name?: string /* 任务名称 */
+}
+
+export interface CCTaskTotalResp {
+    total: number /* 持续提取工作任务数量 */
+}
+
+export interface CCTaskTotalArgs {
+    cc_job_name: string /* 持续提取工作名称 */
 }
 
 export interface CodeFnQueueConfig {
@@ -100,7 +240,19 @@ export interface CrawlFailureListResp {
 export interface CrawlFailureListArgs {
     page_no?: number /* 页数 */
     page_size?: number /* 分页大小 */
-    crawl_name: string /* 任务提取名称 */
+    crawl_name?: string /* 数据提取名称 */
+    crawl_id?: number /* 数据提取ID */
+}
+
+export interface CrawlFailureTotalResp {
+    errno: number /* 错误码 */
+    errmsg: string /* 错误信息 */
+    data?: number /* 数量 */
+}
+
+export interface CrawlFailureTotalArgs {
+    crawl_name?: string /* 数据提取名称 */
+    crawl_id?: number /* 数据提取ID */
 }
 
 export interface CrawlLogDetailData {
@@ -109,7 +261,7 @@ export interface CrawlLogDetailData {
     url: string /* URL */
     level: string /* 日志等级 */
     message: string /* 日志消息 */
-    context: string /* 日志内容 */
+    context?: object /* 日志内容 */
     ctime: string /* 日志时间 */
 }
 
@@ -122,7 +274,19 @@ export interface CrawlLogListResp {
 export interface CrawlLogListArgs {
     page_no?: number /* 页数 */
     page_size?: number /* 分页大小 */
-    crawl_name: string /* 任务提取名称 */
+    crawl_id?: number /* 任务ID */
+    crawl_name?: string /* 任务提取名称 */
+}
+
+export interface CrawlLogTotalResp {
+    errno: number /* 错误码 */
+    errmsg: string /* 错误信息 */
+    data?: number /* 数量 */
+}
+
+export interface CrawlLogTotalArgs {
+    crawl_id?: number /* 任务ID */
+    crawl_name?: string /* 任务提取名称 */
 }
 
 export interface CrawlQueueDetailData {
@@ -134,7 +298,6 @@ export interface CrawlQueueDetailData {
     link_depth?: number /* 深度 */
     link_title?: string /* Link Title */
     inner_text?: string /* ' */
-    inner_html?: string /* ' */
 }
 
 export interface CrawlQueueListResp {
@@ -146,7 +309,19 @@ export interface CrawlQueueListResp {
 export interface CrawlQueueListArgs {
     page_no?: number /* 页数 */
     page_size?: number /* 分页大小 */
-    crawl_name: string /* 任务提取名称 */
+    crawl_id?: number /* 数据提取任务ID */
+    crawl_name?: string /* 任务提取名称 */
+}
+
+export interface CrawlQueueTotalResp {
+    errno: number /* 错误码 */
+    errmsg: string /* 错误信息 */
+    data?: number /* 数量 */
+}
+
+export interface CrawlQueueTotalArgs {
+    crawl_id?: number /* 数据提取任务ID */
+    crawl_name?: string /* 任务提取名称 */
 }
 
 export interface CrawlSuccessDetailData {
@@ -174,22 +349,24 @@ export interface CrawlSuccessListResp {
 export interface CrawlSuccessListArgs {
     page_no?: number /* 页数 */
     page_size?: number /* 分页大小 */
-    crawl_name: string /* 任务提取名称 */
+    crawl_id?: number /* 数据提取任务ID */
+    crawl_name?: string /* 数据提取任务名称 */
 }
 
-export interface CrawlConfigV2 {
-    queue_name: string /* 队列名称 */
-    fn_name: string /* 函数名 */
-    fn_config?: CodeFnArgConfig[] /* 函数参数配置 */
+export interface CrawlSuccessTotalResp {
+    errno: number /* 错误码 */
+    errmsg: string /* 错误信息 */
+    data?: number /* 数量 */
 }
 
-export interface CrawlTaskConfig {
-    v2?: CrawlConfigV2[] /* V2配置 */
+export interface CrawlSuccessTotalArgs {
+    crawl_id?: number /* 数据提取任务ID */
+    crawl_name?: string /* 数据提取任务名称 */
 }
 
 export interface CrawlTaskDetailData {
     crawl_name: string /* 任务提取名称 */
-    crawl_config: CrawlTaskConfig /* 数据提取配置 */
+    crawl_config: CrawlTaskGenericConfig /* 数据提取配置 */
     crawl_desc: string /* 抓取描述 */
     browser_name?: string /* 浏览器名称 */
     concurrent?: number /* 并发 */
@@ -203,7 +380,7 @@ export interface CrawlTaskDetailData {
     record_video?: boolean /* 视频 */
     crawl_id: number /* 数据提取ID */
     username: string /* 用户 */
-    run_state: string /* 运行状态 */
+    run_state: "init" | "start" | "stop" | "run" | "pause" | "done" /* 运行状态 */
     pause_reason: string /* 暂停原因 */
     run_page: number /* 已抓取 */
     run_time: number /* 耗时 */
@@ -212,7 +389,7 @@ export interface CrawlTaskDetailData {
 
 export interface CrawlTaskAddArgs {
     crawl_name: string /* 任务提取名称 */
-    crawl_config: CrawlTaskConfig /* 数据提取配置 */
+    crawl_config: CrawlTaskGenericConfig /* 数据提取配置 */
     crawl_desc: string /* 抓取描述 */
     browser_name?: string /* 浏览器名称 */
     concurrent?: number /* 并发 */
@@ -235,7 +412,8 @@ export interface CrawlTaskListResp {
 export interface CrawlTaskListArgs {
     page_no?: number /* 页数 */
     page_size?: number /* 分页大小 */
-    crawl_name: string /* 任务提取名称 */
+    crawl_name?: string /* 数据提取任务 */
+    crawl_id?: number /* 数据提取任务ID */
 }
 
 export interface CrawlTaskStartResp {
@@ -244,7 +422,8 @@ export interface CrawlTaskStartResp {
 }
 
 export interface CrawlTaskStartArgs {
-    crawl_name: string /* 数据提取任务 */
+    crawl_name?: string /* 数据提取任务 */
+    crawl_id?: number /* 数据提取任务ID */
 }
 
 export interface WorkerStopCrawlResp {
@@ -253,7 +432,8 @@ export interface WorkerStopCrawlResp {
 }
 
 export interface CrawlTaskStopArgs {
-    crawl_name: string /* 数据提取任务 */
+    crawl_name?: string /* 数据提取任务 */
+    crawl_id?: number /* 数据提取任务ID */
 }
 
 export interface CrawlTaskTotalResp {
@@ -296,16 +476,18 @@ export interface MonitorLogTotalArgs {
 export interface MonitorTaskAddArgs {
     task_name: string /* 任务名称 */
     url: string /* 监控URL */
-    browser_name?: string /* 浏览器名称 */
-    fn_name?: string /* 代码 */
+    browser_name: string /* 浏览器名称 */
+    fn_name: string /* 代码 */
     cron_rule: string /* 定时任务 */
-    fail_alert?: number /* 失败告警 */
-    fail_webhook?: string /* 失败WebHook */
-    success_webhook?: string /* 成功WebHook */
-    success_notify: boolean /* 成功通知 */
+    fail_alert: number /* 失败告警 */
+    fail_webhook: string /* 失败WebHook */
+    success_webhook: string /* 成功WebHook */
+    change_webhook: string /* 变化WebHook */
     record_log: boolean /* 记录日志 */
     record_snapshot: boolean /* 记录截图 */
     record_rrweb: boolean /* 记录RRWeb */
+    record_pdf?: boolean /* 记录PDF */
+    record_video?: boolean /* 视频录制 */
     timeout: number /* 超时时间 */
     enable: boolean /* 启用 */
 }
@@ -313,16 +495,18 @@ export interface MonitorTaskAddArgs {
 export interface MonitorTaskDetailData {
     task_name: string /* 任务名称 */
     url: string /* 监控URL */
-    browser_name?: string /* 浏览器名称 */
-    fn_name?: string /* 代码 */
+    browser_name: string /* 浏览器名称 */
+    fn_name: string /* 代码 */
     cron_rule: string /* 定时任务 */
-    fail_alert?: number /* 失败告警 */
-    fail_webhook?: string /* 失败WebHook */
-    success_webhook?: string /* 成功WebHook */
-    success_notify: boolean /* 成功通知 */
+    fail_alert: number /* 失败告警 */
+    fail_webhook: string /* 失败WebHook */
+    success_webhook: string /* 成功WebHook */
+    change_webhook: string /* 变化WebHook */
     record_log: boolean /* 记录日志 */
     record_snapshot: boolean /* 记录截图 */
     record_rrweb: boolean /* 记录RRWeb */
+    record_pdf?: boolean /* 记录PDF */
+    record_video?: boolean /* 视频录制 */
     timeout: number /* 超时时间 */
     enable: boolean /* 启用 */
     username: string /* 用户名 */
@@ -335,7 +519,6 @@ export interface MonitorTaskDetailData {
     cur_text: string /* Cur Text */
     cur_change: boolean /* Cur Change */
     cur_need_view: boolean /* Cur Need View */
-    running: boolean /* Running */
     valid: boolean /* Valid */
 }
 
@@ -349,6 +532,7 @@ export interface MonitorTaskListArgs {
     page_no?: number /* 页数 */
     page_size?: number /* 分页大小 */
     task_name: string /* 任务名称 */
+    only_need_view?: boolean /* 只显示未查看的 */
 }
 
 export interface MonitorTaskTotalResp {
@@ -373,15 +557,96 @@ export interface ProcessRegisterArgs {
     worker_groups: string[] /* 工作进程的分组 */
 }
 
-export interface CrawlAddUrlArgs {
-    crawl_id: number /* 数据提取任务ID */
+export interface CCTaskAddUrlResp {
+    add: boolean /* 是否添加 */
+}
+
+export interface CCAddUrlArgs {
     url: string /* 添加的URL */
     queue_name: string /* 队列名称 */
     src_url?: string /* Src Url */
     link_depth: number /* ' */
     link_title?: string /* Link Title */
     inner_text?: string /* Inner Text */
-    inner_html?: string /* Inner Html */
+    cc_task_id: number /* 持续提取任务ID */
+    add_if_before?: string /* 添加条件 */
+}
+
+export interface CCFailureAddResp {
+    ok: boolean /* 是否成功 */
+}
+
+export interface CCFailureAddArgs {
+    dst_url: string /* 目标URL */
+    src_url: string /* 源URL */
+    queue_name: string /* 队列名称 */
+    snapshot_path?: string /* 截图文件 */
+    rrweb_path?: string /* RRWeb文件 */
+    pdf_path?: string /* PDF */
+    video_path?: string /* 录屏 */
+    consume: number /* 耗时 */
+    reason: string /* 错误原因 */
+    cc_task_id: number /* 持续提取任务ID */
+}
+
+export interface CCLogAddResp {
+    ok: boolean /* 是否成功 */
+}
+
+export interface CCLogAddArgs {
+    url: string /* URL */
+    level: string /* 日志等级 */
+    message: string /* 日志消息 */
+    context?: object /* 上下文 */
+    cc_task_id: number /* 持续提取任务ID */
+}
+
+export interface CCSuccessAddResp {
+    ok: boolean /* 是否成功 */
+}
+
+export interface CCSuccessAddArgs {
+    dst_url: string /* 目标URL */
+    src_url: string /* 源URL */
+    queue_name: string /* 队列名称 */
+    snapshot_path?: string /* 截图文件 */
+    rrweb_path?: string /* RRWeb文件 */
+    pdf_path?: string /* PDF */
+    video_path?: string /* 录屏 */
+    consume: number /* 耗时 */
+    extract_data: string /* 提取出来的数据 */
+    cc_task_id: number /* 持续提取任务ID */
+}
+
+export interface CCQueueDetailData {
+    username: string /* 用户名 */
+    cc_job_id: number /* 工作ID */
+    cc_task_id: number /* 任务ID */
+    dst_url: string /* 访问URL */
+    queue_name: string /* 队列名称 */
+    src_url: string /* 来源URL */
+    link_depth: number /* 链接深度 */
+    link_title: string /* 链接标题 */
+    inner_text: string /* 内部文本 */
+    ctime: string /* 创建时间 */
+}
+
+export interface CCGetJobResp {
+    data: CCQueueDetailData /* 详细数据 */
+}
+
+export interface CCGetJobArgs {
+    cc_task_id: number /* 持续提取任务ID */
+}
+
+export interface CrawlAddUrlArgs {
+    url: string /* 添加的URL */
+    queue_name: string /* 队列名称 */
+    src_url?: string /* Src Url */
+    link_depth: number /* ' */
+    link_title?: string /* Link Title */
+    inner_text?: string /* Inner Text */
+    crawl_id: number /* 数据提取任务ID */
 }
 
 export interface CrawlFailureAddResp {
@@ -390,23 +655,24 @@ export interface CrawlFailureAddResp {
 }
 
 export interface CrawlFailureAddArgs {
-    crawl_id: number /* 数据提取任务ID */
     dst_url: string /* 目标URL */
     src_url: string /* 源URL */
     queue_name: string /* 队列名称 */
-    reason: string /* 错误原因 */
     snapshot_path?: string /* 截图文件 */
     rrweb_path?: string /* RRWeb文件 */
+    pdf_path?: string /* PDF */
     video_path?: string /* 录屏 */
     consume: number /* 耗时 */
+    reason: string /* 错误原因 */
+    crawl_id: number /* 数据提取任务ID */
 }
 
 export interface CrawlLogAddArgs {
-    crawl_id: number /* 任务ID */
     url: string /* URL */
     level: string /* 日志等级 */
     message: string /* 日志消息 */
-    context: string /* 上下文 */
+    context?: object /* 上下文 */
+    crawl_id: number /* 任务ID */
 }
 
 export interface CrawlSuccessAddResp {
@@ -415,16 +681,18 @@ export interface CrawlSuccessAddResp {
 }
 
 export interface CrawlSuccessAddArgs {
-    crawl_id: number /* 数据提取任务ID */
-    url: string /* URL */
-    final_url: string /* 最终URL */
+    dst_url: string /* 目标URL */
+    src_url: string /* 源URL */
     queue_name: string /* 队列名称 */
-    link_depth: number /* 深度 */
-    extract_data: string /* 提取出来的数据 */
-    snapshot_path?: string /* Snapshot Path */
-    rrweb_path?: string /* Rrweb Path */
-    video_path?: string /* Video Path */
+    snapshot_path?: string /* 截图文件 */
+    rrweb_path?: string /* RRWeb文件 */
+    pdf_path?: string /* PDF */
+    video_path?: string /* 录屏 */
     consume: number /* 耗时 */
+    extract_data: string /* 提取出来的数据 */
+    crawl_id: number /* 数据提取任务ID */
+    final_url: string /* 最终URL */
+    link_depth: number /* 深度 */
 }
 
 export interface CrawlGetJobResp {
@@ -468,6 +736,41 @@ export interface UserTokenResp {
     token: string /* 新的Token */
 }
 
+export interface LogRecord {
+    level: "DEBUG" | "INFO" | "WARN" | "ERROR" /* 日志等级 */
+    message: string /* 日志信息 */
+    context?: object /* 上下文 */
+}
+
+export interface WorkerRunSandboxData {
+    page_data?: object /* 返回的数据 */
+    log_data?: LogRecord[] /* 日志记录 */
+}
+
+export interface WorkerRunSandboxResp {
+    errno: number /* 错误码 */
+    errmsg?: string /* 错误信息 */
+    data?: WorkerRunSandboxData /* 返回结果 */
+}
+
+export interface VialSandboxRunCodeArgs {
+    url: string /* 目标网页 */
+    browser_name?: string /* 浏览器 */
+    worker_name?: string /* 工作者 */
+    timeout?: number /* 超时时间 */
+    fn_config?: object /* 函数参数 */
+    fn_code: string /* 运行的代码 */
+}
+
+export interface VialSandboxRunFuncArgs {
+    url: string /* 目标网页 */
+    browser_name?: string /* 浏览器 */
+    worker_name?: string /* 工作者 */
+    timeout?: number /* 超时时间 */
+    fn_config?: object /* 函数参数 */
+    fn_name: string /* 运行的函数 */
+}
+
 export interface WorkerRunCrawlResp {
     start: boolean /* 启动运行 */
     reason?: string /* 启动失败的原因 */
@@ -477,8 +780,9 @@ export interface WorkerRunCrawlArgs {
     crawl_id: number /* 数据提取任务ID */
     username: string /* 用户名 */
     crawl_name: string /* 任务名称 */
-    crawl_config: CrawlTaskConfig /* 任务配置 */
+    crawl_config: CrawlTaskGenericConfig /* 任务配置 */
     browser_id?: number /* 浏览器ID */
+    browser_name?: string /* 浏览器名称 */
     concurrent: number /* 并发 */
     init_urls: string /* 初始URL */
     depth_limit: number /* 深度限制 */
@@ -512,6 +816,16 @@ export interface WorkerRunMonitorArgs {
     record_snapshot: boolean /* 截图 */
     record_rrweb: boolean /* RRWEB记录 */
     timeout: number /* 超时时间 */
+}
+
+export interface WorkerRunSandboxArgs {
+    username: string /* 用户名 */
+    url: string /* 目标网址 */
+    browser_id?: number /* 浏览器ID */
+    timeout?: number /* 超时时间 */
+    fn_name: string /* 函数名称 */
+    fn_code: string /* 函数代码 */
+    fn_config?: object /* 函数参数配置 */
 }
 
 export interface WorkerBrowserRunLimit {
