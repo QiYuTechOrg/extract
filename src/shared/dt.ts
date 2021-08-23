@@ -1,6 +1,3 @@
-import {CodeFnArgConfig, CodeFnQueueConfig} from "./gen/dt";
-
-
 /**
  * 翻译参数
  */
@@ -123,79 +120,6 @@ interface GenericEvalResult {
 }
 
 /**
- * 搜索引擎返回的字段信息
- */
-export interface KeywordSearchResult extends GenericEvalResult {
-    /// 搜索引擎的名字 [必须有表示这个信息是那个搜索引擎产生的]
-    se_name: string
-    /// 搜索的关键字
-    keyword: string
-
-    /// 搜索结果
-    search_result?: SearchResultData
-    /// 函数的日志记录
-    func_log?: LogRecord[]
-}
-
-
-/**
- * 智能抽取模式
- */
-export interface ExtractSmartOptions {
-}
-
-/// return mode 需要移除
-/// 我们根据 options 和解析类型来判断返回的数据类型
-export type DataExtractReturnMode = "string" | "html"
-
-/**
- * 链接的抽取规则
- */
-export interface ExtractLinkOptions {
-    /**
-     * 必须是同一域名
-     */
-    same_host: boolean
-    /**
-     * 必须是同一目录(下级目录也可以)
-     */
-    same_dir: boolean
-}
-
-export type ExtractParseMode = "smart" | "link" | "value"
-
-export interface ExtractValueOptions {
-    inline_image: boolean
-    inline_css: boolean
-}
-
-/**
- * 数据抽取参数
- */
-export interface DataExtractArgs {
-    /// 需要从这个节点抽取数据
-    doc: HTMLElement
-
-    /// 抽取模式
-    parseMode: ExtractParseMode
-
-    /// 返回模式
-    /// 部分参数有可能不需要
-    returnMode?: DataExtractReturnMode
-
-    /// 抽取模式为 link 的时候有效
-    /// 允许为 null 使用默认值
-    linkOptions?: ExtractLinkOptions
-
-    /// 抽取模式为 value 的时候有效
-    /// 允许为 null 使用默认值
-    valueOptions?: ExtractValueOptions
-
-    /// 智能提取模式
-    smartOptions?: ExtractSmartOptions
-}
-
-/**
  * HTTP 请求参数
  */
 export interface HttpCallArgs {
@@ -221,67 +145,6 @@ export interface FuncCallArgs {
     fn_name: string
     // 函数的参数
     fn_args: Record<string, any>
-}
-
-/**
- * 抽取 URL 返回结果
- */
-export interface ExtractLinkItem {
-    // 目标 URL
-    target_url: string
-    // 来源页面
-    src_url: string
-    // 链接标题
-    link_title?: string
-    // 内部文字
-    innerText?: string
-    // 内部 html
-    innerHtml?: string
-}
-
-export type ExtractLinkResult = ExtractLinkItem[]
-
-
-/**
- * 数据提取结果记录
- */
-export interface StorageCrawlResultRecord {
-    id: number
-
-    /**
-     * 访问的源 URL
-     */
-    url: string
-    /**
-     * 最终的 URL [一般跟 url 应该一样，除非 301/302 跳转]
-     */
-    final_url: string
-    /**
-     * 队列名称
-     */
-    queue_name: string
-
-    link_depth: number
-    /**
-     * 获取到的数据
-     */
-    extract_data: string | Record<string, any>
-    /**
-     * HTML 源代码
-     */
-    html_raw: string
-
-    snapshot_path: string | null
-    rrweb_path: string | null
-    video_path: string | null
-    /**
-     * 耗时
-     * 单位:毫秒
-     */
-    consume: number
-
-    /// 创建时间
-    ctime: string
 }
 
 export interface BindingDbFunctions {
@@ -415,12 +278,6 @@ export interface FnExecArgs<ArgsType extends Record<string, any>, DataType, FnsT
 }
 
 
-export interface MonitorExecResult {
-    // 获取数据是否成功
-    ok: boolean
-}
-
-
 /// 可以返回任意的值
 /// 注意: 个别字段有特殊的含义
 export interface FnExecResult extends Record<string, any> {
@@ -443,31 +300,6 @@ export interface FnQueueUrl {
 
 
 /**
- * 数据提取添加日志参数
- */
-export interface CrawlAddLogArgs {
-    // 网页的 URL
-    url: string,
-    // 日志等级
-    level: string,
-    // 消息
-    message: string,
-    // 上下文
-    context?: Record<string, any>
-}
-
-
-/**
- * 日志记录
- */
-export interface LogRecord {
-    level: 'DEBUG' | 'INFO' | 'WARN' | 'ERROR'
-    message: string
-    context: Record<string, any> | null
-}
-
-
-/**
  * 本地(操作系统)通知提示
  */
 export interface LocalNotificationOptions {
@@ -479,15 +311,6 @@ export interface LocalNotificationOptions {
      * 通知的内容
      */
     body: string
-}
-
-export interface EvaluateFuncType {
-    /// 函数名
-    name: string,
-    /// 函数代码
-    code: string,
-    /// 函数参数
-    args: Record<string, any>
 }
 
 
@@ -510,18 +333,4 @@ export interface MonitorRuleViewBlock {
     markdown_text?: string
 }
 
-
-/**
- * 代码 index.json 配置文件的内容
- */
-export interface CodeIndexJson {
-    // 函数名
-    name: string
-    // 简介
-    summary: string
-    // 这个函数的参数配置
-    fn_config?: CodeFnArgConfig[]
-    // 这个函数产生的队列
-    fn_queue?: CodeFnQueueConfig[]
-}
 
