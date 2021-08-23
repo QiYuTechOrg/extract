@@ -335,7 +335,7 @@ export interface OnRequestArgs {
         status: number | null
         headers: Record<string, string>
         text: string
-        data: Buffer
+        data: ArrayBuffer
     }
 }
 
