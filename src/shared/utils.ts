@@ -1,4 +1,4 @@
-import {FnQueueUrl} from "./dt";
+import {FnQueueUrl} from "./dt_core";
 
 /**
  * 检测是否为数字
