@@ -1,9 +1,7 @@
 {
   "license": "UNLICENSED",
-  "scripts": {
-  },
-  "dependencies": {
-  },
+  "scripts": {},
+  "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.2.3",
     "rollup": "^2.53.2",
