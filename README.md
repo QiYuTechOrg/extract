@@ -19,4 +19,4 @@ make build
 
 ## 使用
 
-把编译之后文件导入 奇遇网络工具箱 即可
+把编译之后文件导入 [奇遇网络工具箱](https://oss.qiyutech.tech/seo/seo_index.html) 即可
