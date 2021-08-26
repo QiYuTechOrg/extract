@@ -4,5 +4,6 @@ node_modules
 # ignore all js files
 *.js
 package-lock.json
+src.zip
 yarn.lock
 !rollup.config.js
